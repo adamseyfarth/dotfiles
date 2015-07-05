@@ -1,1 +1,6 @@
-# dotfiles
+* dotfiles
+
+General configuration files for unix tools.
+
+Does not include emacs configuration, which are in
+[[https://github.com/adamseyfarth/.emacs.d][.emacs.d]].
