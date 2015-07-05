@@ -1,1 +1,3 @@
-URxvt*font:	8x13
+URxvt*font: 8x13
+URxvt*background: black
+URxvt*foreground: white
