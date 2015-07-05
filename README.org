@@ -10,9 +10,12 @@ Does not include emacs configuration, which are in
 - [[http://pod.tst.eu/http://cvs.schmorp.de/rxvt-unicode/doc/rxvt.1.pod][rxvt-unicode]]
   --- Also, [[https://wiki.archlinux.org/index.php/Main_page][the Arch
   wiki]] has [[https://wiki.archlinux.org/index.php/Rxvt-unicode][a
-  pretty useful writeup]].
+  pretty useful writeup]]
 - [[http://zsh.sourceforge.net/][The Z shell]] (look for non-sourceforge link)
   - [[http://antigen.sharats.me/][Antigen]]
     - [[https://github.com/zsh-users/zsh-syntax-highlighting][zsh-syntax-highlighting]]
       --- with some customization I found
-      [[http://blog.patshead.com/2012/01/using-and-customizing-zsh-syntax-highlighting-with-oh-my-zsh.html][here]].
+      [[http://blog.patshead.com/2012/01/using-and-customizing-zsh-syntax-highlighting-with-oh-my-zsh.html][here]]
+    - [[https://github.com/robbyrussell/oh-my-zsh/wiki/Themes][Theme]]:
+      tjkirch
+- [[https://github.com/chriskempson/base16-xresources][Base16 Xresources]]

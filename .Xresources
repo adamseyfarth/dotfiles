@@ -1,3 +1,5 @@
 URxvt*font: 8x13
 URxvt*background: black
 URxvt*foreground: white
+URxvt*scrollBar_right: True
+URxvt*scrollstyle: rxvt
