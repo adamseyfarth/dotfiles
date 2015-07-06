@@ -18,4 +18,11 @@ Does not include emacs configuration, which are in
       [[http://blog.patshead.com/2012/01/using-and-customizing-zsh-syntax-highlighting-with-oh-my-zsh.html][here]]
     - [[https://github.com/robbyrussell/oh-my-zsh/wiki/Themes][Theme]]:
       tjkirch
-- [[https://github.com/chriskempson/base16-xresources][Base16 Xresources]]
+- Base16
+  - [[https://github.com/chriskempson/base16-xresources][Base16 Xresources]]
+  - [[https://github.com/chriskempson/base16-gnome-terminal][Base16 for Gnome Terminal]]
+    These two commands are needed for this to work:
+#+BEGIN_SRC shell-script
+  cat /etc/DIR_COLORS >~/.dir_colors
+  source base16-gnome-terminal.sh
+#+END_SRC

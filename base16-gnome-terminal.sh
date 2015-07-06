@@ -1,0 +1,1 @@
+base16-gnome-terminal/base16-default.dark.sh
