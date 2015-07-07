@@ -21,8 +21,5 @@ Does not include emacs configuration, which is in
 - Base16
   - [[https://github.com/chriskempson/base16-xresources][Base16 Xresources]]
   - [[https://github.com/chriskempson/base16-gnome-terminal][Base16 for Gnome Terminal]]
-    These two commands are needed for this to work:
-#+BEGIN_SRC shell-script
-  cat /etc/DIR_COLORS >~/.dir_colors
-  source base16-gnome-terminal.sh
-#+END_SRC
+    To make this work, I had to ~cat /etc/DIR_COLORS >~/.dir_colors~
+    and ~source base16-gnome-terminal.sh~.
