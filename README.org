@@ -2,15 +2,15 @@
 
 General configuration files for unix tools.
 
-Does not include emacs configuration, which are in
+Does not include emacs configuration, which is in
 [[https://github.com/adamseyfarth/.emacs.d][.emacs.d]].
 
 ** Package configuration links
 
 - [[http://pod.tst.eu/http://cvs.schmorp.de/rxvt-unicode/doc/rxvt.1.pod][rxvt-unicode]]
-  --- Also, [[https://wiki.archlinux.org/index.php/Main_page][the Arch
-  wiki]] has [[https://wiki.archlinux.org/index.php/Rxvt-unicode][a
-  pretty useful writeup]]
+  --- Also,
+  [[https://wiki.archlinux.org/index.php/Main_page][the Arch wiki]] has
+  [[https://wiki.archlinux.org/index.php/Rxvt-unicode][a pretty useful writeup]]
 - [[http://zsh.sourceforge.net/][The Z shell]] (look for non-sourceforge link)
   - [[http://antigen.sharats.me/][Antigen]]
     - [[https://github.com/zsh-users/zsh-syntax-highlighting][zsh-syntax-highlighting]]
