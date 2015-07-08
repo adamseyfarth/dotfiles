@@ -17,9 +17,9 @@ def main():
     """
     args = command_line()
     if args.environment == "console":
-        console_layout(args.layout)
+        console_layout(args.layout, args.force)
     elif args.environment == "x":
-        x_layout(args.layout)
+        x_layout(args.layout, args.force)
 
 
 def command_line():
@@ -35,10 +35,11 @@ def command_line():
                         help=("For x, look for choices in one of: {}.  "
                               "For console, use a file like from dumpkeys"
                               .format("\n".join(kbmap_locs))))
+    parser.add_argument("--force", "-f", action="store_true")
     return parser.parse_args()
 
 
-def console_layout(layout):
+def console_layout(layout, force):
     """Change the layout for a virtual console
     """
     command = ["loadkeys"]
@@ -46,25 +47,28 @@ def console_layout(layout):
         command.append("-d")
     else:
         command.append(layout)
-    confirm(command)
+    confirm(command, force)
 
 
-def x_layout(layout):
+def x_layout(layout, force):
     """Change the layout for X windows
     """
     command = ["setxkbmap"]
     if layout is not None:
         command.append(layout)
     command += ["-option", "ctrl:nocaps"]
-    confirm(command)
+    confirm(command, force)
 
 
-def confirm(command):
-    print('Command will be "{}"\nRun? (yes/no)'
-          .format(" ".join(command)),
-          end=" ")
-    if strtobool(input()):
+def confirm(command, force):
+    if force:
         subprocess.call(command)
+    else:
+        print('Command will be "{}"\nRun? (yes/no)'
+              .format(" ".join(command)),
+              end=" ")
+        if strtobool(input()):
+            subprocess.call(command)
 
 
 
