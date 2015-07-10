@@ -30,3 +30,4 @@ export PATH="$HOME/bin:$PATH"
 export EDITOR="emacsclient"
 
 alias ls="ls --color"
+alias en="emacsclient -n"
