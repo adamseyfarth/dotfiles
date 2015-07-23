@@ -1,5 +1,3 @@
-URxvt*font: 8x13
-URxvt*background: black
-URxvt*foreground: white
+URxvt*font: -*-terminus-*-*-*-*-18-*-*-*-*-*-*-*
 URxvt*scrollBar_right: True
 URxvt*scrollstyle: rxvt
