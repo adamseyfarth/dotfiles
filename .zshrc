@@ -28,6 +28,7 @@ ZSH_HIGHLIGHT_STYLES[assign]=none
 
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export EDITOR="emacsclient"
+export LESS=-X
 
 alias ls="ls --color"
 alias en="emacsclient -n"

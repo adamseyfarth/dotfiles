@@ -1,6 +1,6 @@
 URxvt*font: xft:Source Code Pro:size=15
 URxvt*scrollBar_right: True
 URxvt*scrollstyle: rxvt
-URxvt.letterSpace: -1
+URxvt.letterSpace: 0
 
 #include "dotfiles/base16.xresources"
