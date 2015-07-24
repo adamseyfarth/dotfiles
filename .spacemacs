@@ -1,3 +1,4 @@
+;;; .spacemacs --- Settings for the Spacemacs Emacs configuration package
 ;; -*- mode: emacs-lisp -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
@@ -29,6 +30,18 @@
      syntax-checking
      version-control
      python
+     clojure
+     haskell
+     ipython-notebook
+     latex
+     racket
+     rust
+     shell-scripts
+     finance
+     gtags
+     slime
+     themes-megapack
+     irc
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
