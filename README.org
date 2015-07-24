@@ -18,6 +18,7 @@ Does not include emacs configuration, which is in
       [[http://blog.patshead.com/2012/01/using-and-customizing-zsh-syntax-highlighting-with-oh-my-zsh.html][here]]
     - [[https://github.com/robbyrussell/oh-my-zsh/wiki/Themes][Theme]]:
       tjkirch
+- [[https://github.com/syl20bnr/spacemacs][Spacemacs]]
 - Base16
   - [[https://github.com/chriskempson/base16-xresources][Base16 Xresources]]
   - [[https://github.com/chriskempson/base16-gnome-terminal][Base16 for Gnome Terminal]]
