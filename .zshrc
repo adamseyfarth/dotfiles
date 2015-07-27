@@ -26,9 +26,10 @@ ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[assign]=none
 
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/krb5/bin:/usr/local/ossh/bin:$PATH"
 export EDITOR="emacsclient"
 export LESS=-X
+export KRB5_CONFIG=/usr/local/krb5/etc/krb5.conf
 
 alias ls="ls --color"
 alias en="emacsclient -n"
