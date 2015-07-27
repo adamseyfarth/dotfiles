@@ -1,4 +1,4 @@
-URxvt*font: xft:Source Code Pro:size=15
+URxvt*font: xft:Source Code Pro:size=11
 URxvt*scrollBar_right: True
 URxvt*scrollstyle: rxvt
 URxvt.letterSpace: 0
