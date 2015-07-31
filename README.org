@@ -1,6 +1,7 @@
 * dotfiles
 
-General configuration files for unix tools.
+General configuration files for unix tools. Use [[https://www.gnu.org/software/stow/][GNU Stow]] to manage symlinks from
+~$HOME~ (more or less as described [[http://brandon.invergo.net/news/2012-05-26-using-gnu-stow-to-manage-your-dotfiles.html][by Brandon Invergo]]).
 
 ** Package configuration links
 
