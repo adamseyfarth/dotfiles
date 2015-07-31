@@ -23,7 +23,8 @@
      ;; markdown
      auto-completion
      emacs-lisp
-     org
+     (org :variables
+          org-export-allow-bind-keywords t)
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -50,11 +51,13 @@
    ;; configuration in `dotspacemacs/config'.
    dotspacemacs-additional-packages '()
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages (if (or (> emacs-major-version 24)
-                                          (and (= emacs-major-version 24)
-                                               (>= emacs-minor-version 4)))
-                                      '()
-                                      '(magit))
+   dotspacemacs-excluded-packages (concatenate 'list
+                                               (if (or (> emacs-major-version 24)
+                                                       (and (= emacs-major-version 24)
+                                                            (>= emacs-minor-version 4)))
+                                                   '()
+                                                 '(magit))
+                                               '(ox-gfm))
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -92,7 +95,7 @@ before layers configuration."
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
                                :size 15
-                               :weight normal
+                               :weight semi-bold
                                :width normal
                                :powerline-scale 1.7)
    ;; The leader key
