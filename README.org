@@ -9,7 +9,7 @@ General configuration files for unix tools. Use [[https://www.gnu.org/software/s
   --- Also,
   [[https://wiki.archlinux.org/index.php/Main_page][the Arch wiki]] has
   [[https://wiki.archlinux.org/index.php/Rxvt-unicode][a pretty useful writeup]]
-- [[http://zsh.sourceforge.net/][The Z shell]] (look for non-sourceforge link)
+- [[http://www.zsh.org/][The Z shell]]
   - [[http://antigen.sharats.me/][Antigen]]
     - [[https://github.com/zsh-users/zsh-syntax-highlighting][zsh-syntax-highlighting]]
       --- with some customization I found
