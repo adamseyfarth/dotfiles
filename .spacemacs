@@ -170,6 +170,9 @@ before layers configuration."
    dotspacemacs-default-package-repository nil
    )
   ;; User initialization goes here
+  (add-to-list 'auto-mode-alist '("SConfig\\'" . python-mode))
+  (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
+  (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
   )
 
 (defun dotspacemacs/config ()
