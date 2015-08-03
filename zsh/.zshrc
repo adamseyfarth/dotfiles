@@ -2,7 +2,11 @@ source $HOME/dotfiles/antigen/antigen.zsh
 antigen use oh-my-zsh
 antigen theme tjkirch
 
-antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundles <<EOBUNDLES
+    command-not-found
+    zsh-users/zsh-syntax-highlighting
+EOBUNDLES
+
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 ZSH_HIGHLIGHT_STYLES[default]=none
 ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red,bold
@@ -28,7 +32,7 @@ ZSH_HIGHLIGHT_STYLES[assign]=none
 
 export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/krb5/bin:/usr/local/ossh/bin:$PATH"
 export EDITOR="emacsclient"
-export LESS=-X
+export LESS=-RX
 export KRB5_CONFIG=/usr/local/krb5/etc/krb5.conf
 
 alias ls="ls --color"
