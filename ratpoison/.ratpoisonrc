@@ -1,0 +1,2 @@
+exec xmodmap -e "keycode 115 = F30"
+escape F30
