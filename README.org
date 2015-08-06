@@ -3,6 +3,12 @@
 General configuration files for unix tools. Use [[https://www.gnu.org/software/stow/][GNU Stow]] to manage symlinks from
 ~$HOME~ (more or less as described [[http://brandon.invergo.net/news/2012-05-26-using-gnu-stow-to-manage-your-dotfiles.html][by Brandon Invergo]]).
 
+** Instructions
+*** Spacemacs
+#+BEGIN_SRC sh
+$ git clone --recursive https://github.com/syl20bnr/spacemacs ~/.emacs.d
+#+END_SRC
+
 ** Package configuration links
 
 - [[http://pod.tst.eu/http://cvs.schmorp.de/rxvt-unicode/doc/rxvt.1.pod][rxvt-unicode]]
