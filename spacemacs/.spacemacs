@@ -45,12 +45,19 @@
      ;; themes-megapack
      irc
      git
+     semantic
+     c-c++
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '(monky base16-theme)
+   dotspacemacs-additional-packages
+   '(
+     monky
+     base16-theme
+     elfeed
+     )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages (concatenate 'list
                                                (if (or (> emacs-major-version 24)
@@ -171,16 +178,19 @@ before layers configuration."
    dotspacemacs-default-package-repository nil
    )
   ;; User initialization goes here
-  (add-to-list 'auto-mode-alist '("SConfig\\'" . python-mode))
-  (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
-  (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
   )
 
 (defun dotspacemacs/config ()
   "Configuration function.
- This function is called at the very end of Spacemacs initialization after
-layers configuration."
-)
+
+   This function is called at the very end of Spacemacs initialization after
+   layers configuration."
+  (add-to-list 'auto-mode-alist '("SConfig\\'" . python-mode))
+  (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
+  (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
+  (add-to-list 'evil-emacs-state-modes 'elfeed-search-mode)
+  (setq elfeed-feeds '("http://blog.codinghorror.com/rss/"
+                       "http://xkcd.org/rss.xml")))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
