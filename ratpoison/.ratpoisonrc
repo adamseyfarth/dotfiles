@@ -1,2 +1,6 @@
-exec xmodmap -e "keycode 115 = F30"
-escape F30
+exec xrdb -merge ~/.Xresources
+escape F4
+bind e exec emacs
+unbind c
+bind c exec uxterm
+bind F5 exec icecat
