@@ -198,6 +198,7 @@ before layers configuration."
                        "http://www.joelonsoftware.com/rss.xml"
                        "http://planet.gnu.org/rss20.xml"
                        "http://axisofeval.blogspot.com/feeds/posts/default"
+                       "http://www.aaronsw.com/2002/feeds/pgessays.rss"
                        )))
 
 ;; Do not write anything past this comment. This is where Emacs will
