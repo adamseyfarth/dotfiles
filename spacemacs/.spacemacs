@@ -189,8 +189,12 @@ before layers configuration."
   (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
   (add-to-list 'evil-emacs-state-modes 'elfeed-search-mode)
-  (setq elfeed-feeds '("http://blog.codinghorror.com/rss/"
-                       "http://xkcd.org/rss.xml")))
+  (setq elfeed-feeds '(
+                       "http://blog.codinghorror.com/rss/"
+                       "http://xkcd.org/rss.xml"
+                       "http://www.qwantz.com/rssfeed.php"
+                       "https://about.gitlab.com/atom.xml"
+                       )))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -207,6 +211,9 @@ before layers configuration."
  '(custom-safe-themes
    (quote
     ("7545d3bb77926908aadbd525dcb70256558ba05d7c478db6386bfb37fb6c9120" "73ae6088787f6f72ef52f19698b25bc6f0edf47b9e677bf0a85e3a1e8a7a3b17" "f0e69da2cf73c7f153fc09ed3e0ba6e1fd670fec09b8a6a8ed7b4f9efea3b501" "d72836155cd3b3e52fd86a9164120d597cbe12a67609ab90effa54710b2ac53b" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+ '(expand-region-contract-fast-key "V")
+ '(expand-region-reset-fast-key "r")
+ '(org-agenda-files (quote ("~/plan/plan.org")))
  '(paradox-github-token t)
  '(ring-bell-function (quote ignore) t))
 (custom-set-faces
