@@ -195,6 +195,7 @@ before layers configuration."
                        "http://www.qwantz.com/rssfeed.php"
                        "https://about.gitlab.com/atom.xml"
                        "http://jsomers.net/blog/feed"
+                       "http://www.joelonsoftware.com/rss.xml"
                        )))
 
 ;; Do not write anything past this comment. This is where Emacs will
