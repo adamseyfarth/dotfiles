@@ -5,4 +5,4 @@ URxvt*scrollBar_right: True
 URxvt*scrollstyle: rxvt
 URxvt.letterSpace: 0
 xterm*faceName: Source Code Pro
-xterm*faceSize: 18
+xterm*faceSize: 16
