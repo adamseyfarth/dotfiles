@@ -19,9 +19,7 @@
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ;; better-defaults
-     ;; git
-     ;; markdown
+     markdown
      auto-completion
      emacs-lisp
      (org :variables
@@ -51,7 +49,6 @@
      finance
      gtags
      slime
-     ;; themes-megapack
      irc
      git
      semantic
