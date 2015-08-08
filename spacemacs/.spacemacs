@@ -25,7 +25,16 @@
      auto-completion
      emacs-lisp
      (org :variables
-          org-export-allow-bind-keywords t)
+          org-export-allow-bind-keywords t
+          org-agenda-files '("~/private/plan.org")
+          org-pomodoro-length 24
+          org-pomodoro-audio-player
+          (expand-file-name "~/.guix-profile/bin/mplayer")
+          org-pomodoro-finished-sound
+          "/home/aseyfarth/.emacs.d/elpa/org-pomodoro-20150803.530/resources/bell_multiple.wav"
+          org-pomodoro-start-sound-p t
+          org-pomodoro-ticking-sound-states '(:pomodoro)
+          org-pomodoro-ticking-sound-p t)
      (shell :variables
             shell-default-height 48
             shell-default-position 'bottom)
@@ -59,13 +68,14 @@
      elfeed
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages (concatenate 'list
-                                               (if (or (> emacs-major-version 24)
-                                                       (and (= emacs-major-version 24)
-                                                            (>= emacs-minor-version 4)))
-                                                   '()
-                                                 '(magit))
-                                               '(ox-gfm))
+   dotspacemacs-excluded-packages
+   (concatenate 'list
+                (if (or (> emacs-major-version 24)
+                        (and (= emacs-major-version 24)
+                             (>= emacs-minor-version 4)))
+                    '()
+                    '(magit))
+                '(ox-gfm))
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -215,9 +225,10 @@ before layers configuration."
  '(custom-safe-themes
    (quote
     ("7545d3bb77926908aadbd525dcb70256558ba05d7c478db6386bfb37fb6c9120" "73ae6088787f6f72ef52f19698b25bc6f0edf47b9e677bf0a85e3a1e8a7a3b17" "f0e69da2cf73c7f153fc09ed3e0ba6e1fd670fec09b8a6a8ed7b4f9efea3b501" "d72836155cd3b3e52fd86a9164120d597cbe12a67609ab90effa54710b2ac53b" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+ '(erc-hide-list (quote ("JOIN" "NICK" "PART" "QUIT" "MODE")))
  '(expand-region-contract-fast-key "V")
  '(expand-region-reset-fast-key "r")
- '(org-agenda-files (quote ("~/plan/plan.org")))
+ '(org-agenda-files nil)
  '(paradox-github-token t)
  '(ring-bell-function (quote ignore) t))
 (custom-set-faces
