@@ -63,7 +63,11 @@
      monky
      base16-theme
      elfeed
-     typo
+     ;; Typo mode oesn't seem to be working for me.
+     ;; May be incompatible with spacemacs.
+     ;; - Idle parse error for ".spacemacs"
+     ;; - Not cycling through the quotation marks like I want
+     ;; typo
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages
