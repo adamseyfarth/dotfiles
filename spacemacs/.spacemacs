@@ -26,8 +26,7 @@
           org-export-allow-bind-keywords t
           org-agenda-files '("~/private/plan.org")
           org-pomodoro-length 24
-          org-pomodoro-audio-player
-          (expand-file-name "~/.guix-profile/bin/mplayer")
+          org-pomodoro-audio-player "mplayer"
           org-pomodoro-finished-sound
           "/home/aseyfarth/.emacs.d/elpa/org-pomodoro-20150803.530/resources/bell_multiple.wav"
           org-pomodoro-start-sound-p t
@@ -159,7 +158,7 @@ before layers configuration."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'.
