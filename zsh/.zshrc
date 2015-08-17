@@ -31,7 +31,10 @@ ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[assign]=none
 
-export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/krb5/bin:/usr/local/ossh/bin:$PATH"
+PATH="/usr/lib64/openmpi/bin:$PATH"
+PATH="/usr/local/krb5/bin:/usr/local/ossh/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH"
 export EDITOR="emacsclient"
 export LESS=-RX
 export KRB5_CONFIG=/usr/local/krb5/etc/krb5.conf
