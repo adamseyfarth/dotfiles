@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+# -*- mode: Python; coding: utf-8 -*-
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import argparse
+import sys
+import seaborn as sns
+
+
+def main():
+    sns.set_context(ARGS.context)
+    if ARGS.palette == "cubehelix":
+        sns.set_palette(sns.cubehelix_palette())
+    else:
+        sns.set_palette(ARGS.palette)
+    data = pd.read_csv(ARGS.infile, sep=r"\s+")
+    data.plot(ARGS.x, ARGS.y)
+    plt.axis(ARGS.aspect)
+    ax = plt.gca()
+    xlims = ax.get_xlim()
+    ax.set_xlim(min(xlims), max(xlims))
+    if ARGS.title:
+        plt.title(ARGS.title)
+    plt.show()
+
+
+def command_line():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('infile', nargs='?', type=argparse.FileType('r'),
+                        default=sys.stdin)
+    parser.add_argument("-x", type=str, default="x")
+    parser.add_argument("-y", type=float_list, default=["z"])
+    parser.add_argument("--title", "-t", type=str)
+    parser.add_argument("--aspect", "-a", default="equal",
+                        choices=["equal", "scaled", "tight",
+                                 "image", "normal", "auto"])
+    parser.add_argument("--palette", "-p", type=str, default="colorblind")
+    parser.add_argument("--context", "-c", default="talk",
+                        choices=["paper", "notebook", "talk", "poster"])
+    return parser.parse_args()
+
+
+def float_list(string):
+    return string.split(",")
+
+
+if __name__ == "__main__":
+    ARGS = command_line()
+    main()
