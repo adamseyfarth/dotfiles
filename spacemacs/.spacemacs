@@ -20,6 +20,7 @@
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      markdown
+     gnus
      auto-completion
      emacs-lisp
      (org :variables
@@ -192,11 +193,20 @@ before layers configuration."
   ;; User initialization goes here
   )
 
+(defun my-gnus-group-list-subscribed-groups ()
+  "List all subscribed groups with or without un-read messages"
+  (interactive)
+  (gnus-group-list-all-groups 5)
+  )
+
 (defun dotspacemacs/config ()
   "Configuration function.
 
    This function is called at the very end of Spacemacs initialization after
    layers configuration."
+  (add-hook 'gnus-group-mode-hook
+            ;; list all the subscribed groups even they contain zero un-read messages
+            (lambda () (local-set-key "o" 'my-gnus-group-list-subscribed-groups )))
   (add-to-list 'auto-mode-alist '("SConfig\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
