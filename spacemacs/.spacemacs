@@ -221,6 +221,7 @@ before layers configuration."
                        "http://planet.gnu.org/rss20.xml"
                        "http://axisofeval.blogspot.com/feeds/posts/default"
                        "http://www.norvig.com/rss-feed.xml"
+                       "http://dthompson.us/feeds/all.atom.xml"
                        )))
 
 ;; Do not write anything past this comment. This is where Emacs will
