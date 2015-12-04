@@ -222,7 +222,21 @@ before layers configuration."
                        "http://axisofeval.blogspot.com/feeds/posts/default"
                        "http://www.norvig.com/rss-feed.xml"
                        "http://dthompson.us/feeds/all.atom.xml"
-                       )))
+                       ))
+  (setq gnus-secondary-select-methods
+        '((nntp "gmane" (nntp-address "news.gmane.org"))
+          (nntp "news.gwene.org")
+          ;; (nnimap "gmail"
+          ;;         (nnimap-address
+          ;;          "imap.gmail.com")
+          ;;         (nnimap-server-port 993)
+          ;;         (nnimap-stream starttls))
+          (nnmaildir "aseyfarth"
+                     (directory "~/Mail/aseyfarth")
+                     (directory-files nnheader-directory-files-safe) 
+                     (get-new-mail nil))))
+  (setq gnus-read-active-file 'some)
+  (setq gnus-fetch-old-headers nil))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
