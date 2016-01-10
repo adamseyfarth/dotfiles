@@ -20,7 +20,16 @@
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      markdown
-     gnus
+     (gnus :variables
+           gnus-secondary-select-methods
+           '((nntp "gmane" (nntp-address "news.gmane.org"))
+             (nntp "news.gwene.org")
+             (nnimap "imap.gmail.com"
+                     (nnimap-server-port "imaps")
+                     (nnimap-stream ssl))
+             (nnimap  "imap.kolabnow.com"))
+           gnus-read-active-file 'some
+           gnus-fetch-old-headers nil)
      auto-completion
      emacs-lisp
      (org :variables
@@ -44,12 +53,13 @@
      ipython-notebook
      latex
      racket
+     scheme
      rust
      shell-scripts
      finance
      gtags
-     slime
-     irc
+     ;; slime
+     ;; irc
      git
      semantic
      c-c++
@@ -201,11 +211,32 @@ before layers configuration."
   (gnus-group-list-all-groups 5)
   )
 
+(defun goto-random-line ()
+  (interactive)
+  (if (region-active-p)
+      (goto-random-line-region)
+    (goto-random-line-buffer)))
+
+(defun goto-random-line-region ()
+  (let* ((begin (region-beginning))
+         (end (region-end))
+         (lines (count-lines begin end)))
+    (deactivate-mark)
+    (goto-char begin)
+    (forward-line (random lines))))
+
+(defun goto-random-line-buffer ()
+  (let ((lines (count-lines (point-min) (point-max))))
+    (goto-char (point-min))
+    (forward-line (random lines))))
+
 (defun dotspacemacs/config ()
   "Configuration function.
 
    This function is called at the very end of Spacemacs initialization after
    layers configuration."
+  (spacemacs/declare-prefix "\\" "User commands")
+  (spacemacs/set-leader-keys "\\r" 'goto-random-line)
   (add-hook 'gnus-group-mode-hook
             ;; list all the subscribed groups even they contain zero un-read messages
             (lambda () (local-set-key "o" 'my-gnus-group-list-subscribed-groups )))
@@ -225,20 +256,6 @@ before layers configuration."
                        "http://www.norvig.com/rss-feed.xml"
                        "http://dthompson.us/feeds/all.atom.xml"
                        ))
-  (setq gnus-secondary-select-methods
-        '((nntp "gmane" (nntp-address "news.gmane.org"))
-          (nntp "news.gwene.org")
-          ;; (nnimap "gmail"
-          ;;         (nnimap-address
-          ;;          "imap.gmail.com")
-          ;;         (nnimap-server-port 993)
-          ;;         (nnimap-stream starttls))
-          (nnmaildir "aseyfarth"
-                     (directory "~/Mail/aseyfarth")
-                     (directory-files nnheader-directory-files-safe)
-                     (get-new-mail nil))))
-  (setq gnus-read-active-file 'some)
-  (setq gnus-fetch-old-headers nil)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "m e p" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "<M-return>" 'eval-print-last-sexp))
 
@@ -294,7 +311,7 @@ before layers configuration."
    (quote
     ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
  '(magit-diff-use-overlays nil)
- '(org-agenda-files nil)
+ '(org-agenda-files nil t)
  '(org-capture-templates
    (quote
     (("e" "Normal entry" entry
@@ -317,7 +334,11 @@ before layers configuration."
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(ring-bell-function (quote ignore) t)
+ '(safe-local-variable-values (quote ((org-src-preserve-indentation . t))))
+ '(send-mail-function (quote smtpmail-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
+ '(smtpmail-smtp-server "imap.gmail.com")
+ '(smtpmail-smtp-service 25)
  '(term-default-bg-color "#002b36")
  '(term-default-fg-color "#839496")
  '(vc-annotate-background nil)
