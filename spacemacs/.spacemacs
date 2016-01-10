@@ -208,8 +208,7 @@ before layers configuration."
 (defun my-gnus-group-list-subscribed-groups ()
   "List all subscribed groups with or without un-read messages"
   (interactive)
-  (gnus-group-list-all-groups 5)
-  )
+  (gnus-group-list-all-groups 5))
 
 (defun goto-random-line ()
   (interactive)
@@ -220,15 +219,24 @@ before layers configuration."
 (defun goto-random-line-region ()
   (let* ((begin (region-beginning))
          (end (region-end))
-         (lines (count-lines begin end)))
+         (lines (count-lines begin end))
+         (line-begin (save-excursion
+                       (goto-char begin)
+                       (beginning-of-line)
+                       (1+ (count-lines (point-min) (point)))))
+         (winner (random lines)))
+    (message "Going to line [%d +] %d out of %d"
+             line-begin winner lines)
     (deactivate-mark)
     (goto-char begin)
-    (forward-line (random lines))))
+    (forward-line winner)))
 
 (defun goto-random-line-buffer ()
-  (let ((lines (count-lines (point-min) (point-max))))
+  (let* ((lines (count-lines (point-min) (point-max)))
+         (winner (random lines)))
+    (message "Going to line %d out of %d" (1+ winner) lines)
     (goto-char (point-min))
-    (forward-line (random lines))))
+    (forward-line winner)))
 
 (defun dotspacemacs/config ()
   "Configuration function.
