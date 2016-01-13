@@ -280,7 +280,7 @@ before layers configuration."
    (quote
     ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
  '(magit-diff-use-overlays nil)
- '(org-agenda-files nil)
+ '(org-agenda-files (quote ("~/private/work.org")))
  '(org-capture-templates
    (quote
     (("e" "Normal entry" entry
@@ -303,6 +303,7 @@ before layers configuration."
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(ring-bell-function (quote ignore) t)
+ '(safe-local-variable-values (quote ((org-src-preserve-indentation . t))))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(term-default-bg-color "#002b36")
  '(term-default-fg-color "#839496")
