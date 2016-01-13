@@ -20,7 +20,16 @@
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      markdown
-     gnus
+     (gnus :variables
+           gnus-secondary-select-methods
+           '((nntp "gmane" (nntp-address "news.gmane.org"))
+             (nntp "news.gwene.org")
+             (nnimap "imap.gmail.com"
+                     (nnimap-server-port "imaps")
+                     (nnimap-stream ssl))
+             (nnimap  "imap.kolabnow.com"))
+           gnus-read-active-file 'some
+           gnus-fetch-old-headers nil)
      auto-completion
      emacs-lisp
      (org :variables
@@ -44,12 +53,13 @@
      ipython-notebook
      latex
      racket
+     scheme
      rust
      shell-scripts
      finance
      gtags
-     slime
-     irc
+     ;; slime
+     ;; irc
      git
      semantic
      c-c++
@@ -198,14 +208,43 @@ before layers configuration."
 (defun my-gnus-group-list-subscribed-groups ()
   "List all subscribed groups with or without un-read messages"
   (interactive)
-  (gnus-group-list-all-groups 5)
-  )
+  (gnus-group-list-all-groups 5))
+
+(defun goto-random-line ()
+  (interactive)
+  (if (region-active-p)
+      (goto-random-line-region)
+    (goto-random-line-buffer)))
+
+(defun goto-random-line-region ()
+  (let* ((begin (region-beginning))
+         (end (region-end))
+         (lines (count-lines begin end))
+         (line-begin (save-excursion
+                       (goto-char begin)
+                       (beginning-of-line)
+                       (1+ (count-lines (point-min) (point)))))
+         (winner (random lines)))
+    (message "Going to line [%d +] %d out of %d"
+             line-begin winner lines)
+    (deactivate-mark)
+    (goto-char begin)
+    (forward-line winner)))
+
+(defun goto-random-line-buffer ()
+  (let* ((lines (count-lines (point-min) (point-max)))
+         (winner (random lines)))
+    (message "Going to line %d out of %d" (1+ winner) lines)
+    (goto-char (point-min))
+    (forward-line winner)))
 
 (defun dotspacemacs/config ()
   "Configuration function.
 
    This function is called at the very end of Spacemacs initialization after
    layers configuration."
+  (spacemacs/declare-prefix "\\" "User commands")
+  (spacemacs/set-leader-keys "\\r" 'goto-random-line)
   (add-hook 'gnus-group-mode-hook
             ;; list all the subscribed groups even they contain zero un-read messages
             (lambda () (local-set-key "o" 'my-gnus-group-list-subscribed-groups )))
@@ -304,7 +343,10 @@ before layers configuration."
  '(pos-tip-foreground-color "#93a1a1")
  '(ring-bell-function (quote ignore) t)
  '(safe-local-variable-values (quote ((org-src-preserve-indentation . t))))
+ '(send-mail-function (quote smtpmail-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
+ '(smtpmail-smtp-server "imap.gmail.com")
+ '(smtpmail-smtp-service 25)
  '(term-default-bg-color "#002b36")
  '(term-default-fg-color "#839496")
  '(vc-annotate-background nil)
