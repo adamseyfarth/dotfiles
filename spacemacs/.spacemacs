@@ -22,12 +22,16 @@
      markdown
      (gnus :variables
            gnus-secondary-select-methods
-           '((nntp "gmane" (nntp-address "news.gmane.org"))
-             (nntp "news.gwene.org")
-             (nnimap "imap.gmail.com"
-                     (nnimap-server-port "imaps")
-                     (nnimap-stream ssl))
-             (nnimap  "imap.kolabnow.com"))
+           '((nnimap "mail.margeo.nrlssc.navy.mil")
+             ;; (nntp "gmane" (nntp-address "news.gmane.org"))
+             ;; (nntp "news.gwene.org")
+             ;; (nnimap "imap.gmail.com"
+             ;;         (nnimap-server-port "imaps")
+             ;;         (nnimap-stream ssl))
+             ;; (nnimap  "imap.kolabnow.com")
+             )
+           gnus-posting-styles
+           '(("nrlssc.navy.mil" (address "adam.seyfarth@nrlssc.navy.mil")))
            gnus-read-active-file 'some
            gnus-fetch-old-headers nil)
      auto-completion
@@ -67,6 +71,7 @@
      perspectives
      yaml
      deft
+     typography
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -76,13 +81,7 @@
    '(
      monky
      base16-theme
-     elfeed
-     twittering-mode
-     ;; Typo mode oesn't seem to be working for me.
-     ;; May be incompatible with spacemacs.
-     ;; - Idle parse error for ".spacemacs"
-     ;; - Not cycling through the quotation marks like I want
-     ;; typo
+     smtpmail-multi
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages
@@ -127,7 +126,7 @@ before layers configuration."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 15
+                               :size 19
                                :weight semi-bold
                                :width normal
                                :powerline-scale 1.7)
@@ -245,27 +244,34 @@ before layers configuration."
    layers configuration."
   (spacemacs/declare-prefix "\\" "User commands")
   (spacemacs/set-leader-keys "\\r" 'goto-random-line)
+  (setq-default typo-language 'English)
   (add-hook 'gnus-group-mode-hook
             ;; list all the subscribed groups even they contain zero un-read messages
             (lambda () (local-set-key "o" 'my-gnus-group-list-subscribed-groups )))
+  (defvar smtp-accounts
+    '((ssl "adam.seyfarth@nrlssc.navy.mil" "mail.margeo.nrlssc.navy.mil"
+           587 "MARGEO\aseyfarth" nil)))
   (add-to-list 'auto-mode-alist '("SConfig\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
-  (add-to-list 'evil-emacs-state-modes 'elfeed-search-mode)
-  (setq elfeed-feeds '(
-                       "http://blog.codinghorror.com/rss/"
-                       "http://xkcd.org/rss.xml"
-                       "http://www.qwantz.com/rssfeed.php"
-                       "https://about.gitlab.com/atom.xml"
-                       "http://jsomers.net/blog/feed"
-                       "http://www.joelonsoftware.com/rss.xml"
-                       "http://planet.gnu.org/rss20.xml"
-                       "http://axisofeval.blogspot.com/feeds/posts/default"
-                       "http://www.norvig.com/rss-feed.xml"
-                       "http://dthompson.us/feeds/all.atom.xml"
-                       ))
+  (setq sentence-end-double-space t)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "m e p" 'eval-print-last-sexp)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "<M-return>" 'eval-print-last-sexp))
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "<M-return>" 'eval-print-last-sexp)
+  (require 'smtpmail)
+  (setq send-mail-function 'smtpmail-send-it
+        message-send-mail-function 'smtpmail-send-it
+        mail-from-style nil
+        user-full-name "Adam Seyfarth"
+        user-mail-address "adam.seyfarth@nrlssc.navy.mil"
+        ;; message-signature-file "~/.signature"
+        smtpmail-debug-info t
+        smtpmail-debug-verb t)
+  (setq starttls-use-gnutls t
+        starttls-gnutls-program "gnutls-cli"
+        starttls-extra-arguments nil
+        smtpmail-smtp-server "mail.margeo.nrlssc.navy.mil"
+        smtpmail-smtp-service "587"
+        smtpmail-auth-credentials "~/.authinfo") )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -282,7 +288,7 @@ before layers configuration."
  '(ansi-color-names-vector
    ["#1C2023" "#C7AE95" "#95C7AE" "#AEC795" "#AE95C7" "#C795AE" "#AE95C7" "#C7CCD1"])
  '(ansi-term-color-vector
-   [unspecified "#1C2023" "#C7AE95" "#95C7AE" "#AEC795" "#AE95C7" "#C795AE" "#AE95C7" "#C7CCD1"])
+   [unspecified "#1C2023" "#C7AE95" "#95C7AE" "#AEC795" "#AE95C7" "#C795AE" "#AE95C7" "#C7CCD1"] t)
  '(compilation-message-face (quote default))
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#839496")
@@ -294,7 +300,7 @@ before layers configuration."
  '(erc-hide-list (quote ("JOIN" "NICK" "PART" "QUIT" "MODE")))
  '(expand-region-contract-fast-key "V")
  '(expand-region-reset-fast-key "r")
- '(fci-rule-color "#073642" t)
+ '(fci-rule-color "#073642")
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(highlight-symbol-colors
    (--map
@@ -342,7 +348,11 @@ before layers configuration."
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(ring-bell-function (quote ignore) t)
- '(safe-local-variable-values (quote ((org-src-preserve-indentation . t))))
+ '(safe-local-variable-values
+   (quote
+    ((org-confirm-babel-evaluate)
+     (org-babel-tangle-use-relative-file-links)
+     (org-src-preserve-indentation . t))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(smtpmail-smtp-server "imap.gmail.com")
