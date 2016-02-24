@@ -59,8 +59,9 @@
      racket
      scheme
      rust
+     octave
      shell-scripts
-     finance
+     ;; finance
      gtags
      ;; slime
      ;; irc
@@ -72,6 +73,8 @@
      yaml
      deft
      typography
+     agda
+     idris
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -245,6 +248,7 @@ before layers configuration."
   (spacemacs/declare-prefix "\\" "User commands")
   (spacemacs/set-leader-keys "\\r" 'goto-random-line)
   (setq-default typo-language 'English)
+  (setq-default indent-tabs-mode nil)
   (add-hook 'gnus-group-mode-hook
             ;; list all the subscribed groups even they contain zero un-read messages
             (lambda () (local-set-key "o" 'my-gnus-group-list-subscribed-groups )))
@@ -255,7 +259,8 @@ before layers configuration."
   (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
   (setq sentence-end-double-space t)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "m e p" 'eval-print-last-sexp)
+  (setq dotspacemacs-auto-resume-layouts t)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "<M-return>" 'eval-print-last-sexp)
   (require 'smtpmail)
   (setq send-mail-function 'smtpmail-send-it
