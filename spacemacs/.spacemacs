@@ -247,6 +247,8 @@ before layers configuration."
    layers configuration."
   (spacemacs/declare-prefix "\\" "User commands")
   (spacemacs/set-leader-keys "\\r" 'goto-random-line)
+  (spacemacs/set-leader-keys "\\ TAB" 'yas-expand)
+  (spacemacs/set-leader-keys "\\ g" 'gnus-summary-insert-new-articles)
   (setq-default typo-language 'English)
   (setq-default indent-tabs-mode nil)
   (add-hook 'gnus-group-mode-hook
