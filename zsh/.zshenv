@@ -7,3 +7,4 @@ export LD_LIBRARY_PATH="/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH"
 export EDITOR="emacsclient"
 export LESS=-RX
 export KRB5_CONFIG=/usr/local/krb5/etc/krb5.conf
+export SHELL=/usr/bin/zsh
