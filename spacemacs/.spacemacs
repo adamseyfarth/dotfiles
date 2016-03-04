@@ -48,7 +48,9 @@
           org-pomodoro-ticking-sound-p t)
      (shell :variables
             shell-default-height 48
-            shell-default-position 'bottom)
+            shell-default-position 'bottom
+            shell-default-shell 'multi-term
+            shell-default-term-shell "/usr/bin/zsh")
      syntax-checking
      version-control
      python
@@ -69,7 +71,7 @@
      semantic
      c-c++
      csharp
-     perspectives
+     ;; perspectives
      yaml
      deft
      typography
@@ -85,6 +87,7 @@
      monky
      base16-theme
      smtpmail-multi
+     dash dash-functional
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages
@@ -278,7 +281,13 @@ before layers configuration."
         starttls-extra-arguments nil
         smtpmail-smtp-server "mail.margeo.nrlssc.navy.mil"
         smtpmail-smtp-service "587"
-        smtpmail-auth-credentials "~/.authinfo") )
+        smtpmail-auth-credentials "~/.authinfo"))
+
+;; Sometimes this has an unneeded 'unspecified at the front...
+(defun remove-unspecified ()
+  (setq ansi-term-color-vector
+        (let ((lvec (append ansi-term-color-vector nil)))
+          (vconcat (-remove (lambda (elt) (eq elt 'unspecified)) lvec)))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -292,10 +301,6 @@ before layers configuration."
  '(ahs-idle-interval 0.25)
  '(ahs-idle-timer 0 t)
  '(ahs-inhibit-face-list nil)
- '(ansi-color-names-vector
-   ["#1C2023" "#C7AE95" "#95C7AE" "#AEC795" "#AE95C7" "#C795AE" "#AE95C7" "#C7CCD1"])
- '(ansi-term-color-vector
-   [unspecified "#1C2023" "#C7AE95" "#95C7AE" "#AEC795" "#AE95C7" "#C795AE" "#AE95C7" "#C7CCD1"] t)
  '(compilation-message-face (quote default))
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#839496")
@@ -303,35 +308,14 @@ before layers configuration."
  '(cua-read-only-cursor-color "#859900")
  '(custom-safe-themes
    (quote
-    ("4ab89cc4c58408bb799084a4d9be77fe0700b2f1b75809eae330129b4b921b6f" "7545d3bb77926908aadbd525dcb70256558ba05d7c478db6386bfb37fb6c9120" "73ae6088787f6f72ef52f19698b25bc6f0edf47b9e677bf0a85e3a1e8a7a3b17" "f0e69da2cf73c7f153fc09ed3e0ba6e1fd670fec09b8a6a8ed7b4f9efea3b501" "d72836155cd3b3e52fd86a9164120d597cbe12a67609ab90effa54710b2ac53b" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("8b584a30417351e60bff667fd6f902c31c8ff53ad7b85e54fcadb17d65e7e9ab" "2159a1f9ea13fb1236b684e8e09d4c40b2f09fff345f7a93d0dacc5f8f9deb27" "03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "240fea1bddbd9b6445860b8cfd323c03c58c92cb4339a3bc65cd9b3c63be9a4a" "4ab89cc4c58408bb799084a4d9be77fe0700b2f1b75809eae330129b4b921b6f" "7545d3bb77926908aadbd525dcb70256558ba05d7c478db6386bfb37fb6c9120" "73ae6088787f6f72ef52f19698b25bc6f0edf47b9e677bf0a85e3a1e8a7a3b17" "f0e69da2cf73c7f153fc09ed3e0ba6e1fd670fec09b8a6a8ed7b4f9efea3b501" "d72836155cd3b3e52fd86a9164120d597cbe12a67609ab90effa54710b2ac53b" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(erc-hide-list (quote ("JOIN" "NICK" "PART" "QUIT" "MODE")))
  '(expand-region-contract-fast-key "V")
  '(expand-region-reset-fast-key "r")
- '(fci-rule-color "#073642")
+ '(fci-rule-color "#073642" t)
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
- '(highlight-symbol-colors
-   (--map
-    (solarized-color-blend it "#002b36" 0.25)
-    (quote
-     ("#b58900" "#2aa198" "#dc322f" "#6c71c4" "#859900" "#cb4b16" "#268bd2"))))
- '(highlight-symbol-foreground-color "#93a1a1")
- '(highlight-tail-colors
-   (quote
-    (("#073642" . 0)
-     ("#546E00" . 20)
-     ("#00736F" . 30)
-     ("#00629D" . 50)
-     ("#7B6000" . 60)
-     ("#8B2C02" . 70)
-     ("#93115C" . 85)
-     ("#073642" . 100))))
- '(hl-bg-colors
-   (quote
-    ("#7B6000" "#8B2C02" "#990A1B" "#93115C" "#3F4D91" "#00629D" "#00736F" "#546E00")))
- '(hl-fg-colors
-   (quote
-    ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
  '(magit-diff-use-overlays nil)
+ '(multi-term-program "/usr/bin/zsh")
  '(org-agenda-files (quote ("~/private/work.org")))
  '(org-capture-templates
    (quote
@@ -364,8 +348,6 @@ before layers configuration."
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(smtpmail-smtp-server "imap.gmail.com")
  '(smtpmail-smtp-service 25)
- '(term-default-bg-color "#002b36")
- '(term-default-fg-color "#839496")
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
@@ -387,10 +369,7 @@ before layers configuration."
      (320 . "#2793ba")
      (340 . "#268fc6")
      (360 . "#268bd2"))))
- '(vc-annotate-very-old-color nil)
- '(weechat-color-list
-   (quote
-    (unspecified "#002b36" "#073642" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#839496" "#657b83"))))
+ '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
