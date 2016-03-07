@@ -135,7 +135,7 @@ before layers configuration."
                                :size 19
                                :weight semi-bold
                                :width normal
-                               :powerline-scale 1.3)
+                               :powerline-scale 1.0)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
