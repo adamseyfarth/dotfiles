@@ -135,7 +135,7 @@ before layers configuration."
                                :size 19
                                :weight semi-bold
                                :width normal
-                               :powerline-scale 1.7)
+                               :powerline-scale 1.3)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -267,6 +267,8 @@ before layers configuration."
   (setq dotspacemacs-auto-resume-layouts t)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "<M-return>" 'eval-print-last-sexp)
+  (evil-leader/set-key-for-mode 'term-mode "j" 'term-line-mode)
+  (evil-leader/set-key-for-mode 'term-mode "k" 'term-char-mode)
   (require 'smtpmail)
   (setq send-mail-function 'smtpmail-send-it
         message-send-mail-function 'smtpmail-send-it
