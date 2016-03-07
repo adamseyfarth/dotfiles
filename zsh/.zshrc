@@ -2,7 +2,8 @@ source /etc/zprofile
 source /etc/profile.d/autojump.zsh
 source $HOME/dotfiles/antigen/antigen.zsh
 antigen use oh-my-zsh
-antigen theme tjkirch
+# antigen theme tjkirch
+antigen theme $HOME/dotfiles/zsh aseyfarth
 
 antigen bundles <<EOBUNDLES
     command-not-found
