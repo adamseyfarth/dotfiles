@@ -24,7 +24,7 @@ function preexec_timestamp() {
 PROMPT='%(?,,%{$fg_bold[black]%}│%{$fg[red]%} FAIL: $?%{$reset_color%}
 )%{$fg_bold[black]%}╰─$(timestamp)%{$reset_color%}
 
-%{$fg_bold[black]%}╭─%n@%m: %{$fg[blue]%}%~%{$reset_color%}$(prompt_char)$(git_prompt_info)
+%{$fg_bold[black]%}╭─%n@%m:%{$fg[blue]%}%~%{$reset_color%}$(prompt_char)$(git_prompt_info)
 %{$fg_bold[black]%}%_%{$reset_color%}'
 
 autoload -U add-zsh-hook
