@@ -1,7 +1,7 @@
 # -*- mode: shell-script; -*-
 
-ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg_bold[black]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg_bold[black]%}("
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg_bold[black]%})%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[red]%}⚡"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
@@ -14,7 +14,7 @@ function prompt_char {
 }
 
 function timestamp() {
-    echo '['$(date +'%Y-%m-%d %H:%M:%S').$(($(date +%N)/1000000))$(date +%z)']'
+    date +'[%Y-%m-%d %H:%M:%S.%3N%:z]'
 }
 
 function preexec_timestamp() {
@@ -25,7 +25,7 @@ PROMPT='%(?,,%{$fg_bold[black]%}│%{$fg[red]%} FAIL: $?%{$reset_color%}
 )%{$fg_bold[black]%}╰─$(timestamp)%{$reset_color%}
 
 %{$fg_bold[black]%}╭─%n@%m: %{$fg[blue]%}%~%{$reset_color%}$(prompt_char)$(git_prompt_info)
-  %{$fg_bold[black]%}%_%{$reset_color%}'
+%{$fg_bold[black]%}%_%{$reset_color%}'
 
 autoload -U add-zsh-hook
 add-zsh-hook preexec preexec_timestamp
