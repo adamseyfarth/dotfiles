@@ -35,3 +35,8 @@ ZSH_HIGHLIGHT_STYLES[assign]=none
 
 alias ls="ls --color"
 alias en="emacsclient -n"
+
+function ls_on_chdir() {
+    ls
+}
+add-zsh-hook chpwd ls_on_chdir
