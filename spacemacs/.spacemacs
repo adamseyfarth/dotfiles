@@ -29,7 +29,6 @@
            '(("nrlssc.navy.mil" (address "adam.seyfarth@nrlssc.navy.mil")))
            gnus-read-active-file 'some
            gnus-fetch-old-headers nil
-           gnus-thread-sort-functions '(gnus-thread-sort-by-date)
            )
      auto-completion
      emacs-lisp
@@ -263,6 +262,7 @@ before layers configuration."
   (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
   (setq sentence-end-double-space t)
   (setq dotspacemacs-auto-resume-layouts t)
+  (setq-default gnus-thread-sort-functions '(gnus-thread-sort-by-date))
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "<M-return>" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'term-mode "j" 'term-line-mode)
