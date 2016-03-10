@@ -21,11 +21,22 @@ function preexec_timestamp() {
     echo ${fg_bold[black]}│ $(timestamp)${fg_no_bold[white]}
 }
 
-PROMPT='%(?,,%{$fg_bold[black]%}│%{$fg[red]%} FAIL: $?%{$reset_color%}
-)%{$fg_bold[black]%}╰─$(timestamp)%{$reset_color%}$(git_prompt_info)
+prompt_tail=\
+'%(?,,%{$fg_bold[black]%}│%{$fg[red]%} FAIL: $?%{$reset_color%}
+)%{$fg_bold[black]%}╰─$(timestamp)%{$reset_color%}$(git_prompt_info)'
 
-%{$fg_bold[black]%}╭─%n@%m:%{$fg[blue]%}%~%{$reset_color%}$(prompt_char)
-%{$fg_bold[black]%}%_%{$reset_color%}'
+prompt_head=\
+'%{$fg_bold[black]%}╭─%n@%m:%{$fg[blue]%}%~%{$reset_color%}$(prompt_char)
+'
+
+PROMPT=\
+"$prompt_tail
+
+$prompt_head"
+
+PROMPT2='%{$fg_bold[black]%}%_> %{$reset_color%}'
+PROMPT3='%{$fg_bold[black]%}?# %{$reset_color%}'
+PROMPT4='%{$fg_bold[black]%}+%N:%i> %{$reset_color%}'
 
 autoload -U add-zsh-hook
 add-zsh-hook preexec preexec_timestamp
