@@ -14,11 +14,6 @@
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
-     ;; <M-m f e R> (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
      markdown
      (gnus :variables
            gnus-secondary-select-methods
@@ -33,7 +28,9 @@
            gnus-posting-styles
            '(("nrlssc.navy.mil" (address "adam.seyfarth@nrlssc.navy.mil")))
            gnus-read-active-file 'some
-           gnus-fetch-old-headers nil)
+           gnus-fetch-old-headers nil
+           gnus-thread-sort-functions '(gnus-thread-sort-by-date)
+           )
      auto-completion
      emacs-lisp
      (org :variables
@@ -45,12 +42,14 @@
           "/home/aseyfarth/.emacs.d/elpa/org-pomodoro-20150803.530/resources/bell_multiple.wav"
           org-pomodoro-start-sound-p t
           org-pomodoro-ticking-sound-states '(:pomodoro)
-          org-pomodoro-ticking-sound-p t)
+          org-pomodoro-ticking-sound-p t
+          )
      (shell :variables
             shell-default-height 48
             shell-default-position 'bottom
             shell-default-shell 'multi-term
-            shell-default-term-shell "/usr/bin/zsh")
+            shell-default-term-shell "/usr/bin/zsh"
+            )
      syntax-checking
      version-control
      python
@@ -91,11 +90,9 @@
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages
-   (concatenate 'list
-                (if (version< emacs-version "24.4")
-                    '(magit)
-                  '())
-                '(ox-gfm))
+   (if (version< emacs-version "24.4")
+       '(magit)
+     '())
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -119,7 +116,7 @@ before layers configuration."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed.
-   dotspacemacs-startup-banner 'official
+   dotspacemacs-startup-banner 3
    ;; List of items to show in the startup buffer. If nil it is disabled.
    ;; Possible values are: `recents' `bookmarks' `projects'."
    dotspacemacs-startup-lists '(projects recents)
@@ -160,7 +157,7 @@ before layers configuration."
    dotspacemacs-use-ido nil
    ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
    ;; several times cycle between the kill ring content.
-   dotspacemacs-enable-paste-micro-state nil
+   dotspacemacs-enable-paste-micro-state t
    ;; Guide-key delay in seconds. The Guide-key is the popup buffer listing
    ;; the commands bound to the current keystrokes.
    dotspacemacs-guide-key-delay 0.4
@@ -177,7 +174,7 @@ before layers configuration."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup t
+   dotspacemacs-maximized-at-startup nil
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'.
@@ -187,7 +184,7 @@ before layers configuration."
    ;; Transparency can be toggled through `toggle-transparency'.
    dotspacemacs-inactive-transparency 90
    ;; If non nil unicode symbols are displayed in the mode line.
-   dotspacemacs-mode-line-unicode-symbols nil
+   dotspacemacs-mode-line-unicode-symbols t
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters the
    ;; point when it reaches the top or bottom of the screen.
@@ -210,7 +207,7 @@ before layers configuration."
   ;; User initialization goes here
   )
 
-(defun my-gnus-group-list-subscribed-groups ()
+(defun gnus-list-all-subscribed ()
   "List all subscribed groups with or without un-read messages"
   (interactive)
   (gnus-group-list-all-groups 5))
@@ -255,8 +252,9 @@ before layers configuration."
   (setq-default typo-language 'English)
   (setq-default indent-tabs-mode nil)
   (add-hook 'gnus-group-mode-hook
-            ;; list all the subscribed groups even they contain zero un-read messages
-            (lambda () (local-set-key "o" 'my-gnus-group-list-subscribed-groups )))
+            ;; list all the subscribed groups, even if they contain zero unread
+            ;; messages
+            (lambda () (local-set-key "o" 'gnus-list-all-subscribed)))
   (defvar smtp-accounts
     '((ssl "adam.seyfarth@nrlssc.navy.mil" "mail.margeo.nrlssc.navy.mil"
            587 "MARGEO\aseyfarth" nil)))
