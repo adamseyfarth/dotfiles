@@ -34,7 +34,7 @@
      emacs-lisp
      (org :variables
           org-export-allow-bind-keywords t
-          org-agenda-files '("~/private/plan.org")
+          org-agenda-files '("~/private/work.org")
           org-pomodoro-length 24
           org-pomodoro-audio-player "mplayer"
           org-pomodoro-finished-sound
@@ -316,7 +316,7 @@ before layers configuration."
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(magit-diff-use-overlays nil)
  '(multi-term-program "/usr/bin/zsh")
- '(org-agenda-files (quote ("~/private/work.org")))
+ '(org-agenda-files nil)
  '(org-capture-templates
    (quote
     (("e" "Normal entry" entry
