@@ -71,6 +71,7 @@
      csharp
      ;; perspectives
      yaml
+     ;; themes-megapack
      deft
      typography
      agda
@@ -281,7 +282,16 @@ before layers configuration."
         starttls-extra-arguments nil
         smtpmail-smtp-server "mail.margeo.nrlssc.navy.mil"
         smtpmail-smtp-service "587"
-        smtpmail-auth-credentials "~/.authinfo"))
+        smtpmail-auth-credentials "~/.authinfo")
+  (spacemacs|define-custom-layout "@Gnus"
+    :binding "g"
+    :body
+    (gnus))
+  (spacemacs|define-custom-layout "@Term"
+    :binding "t"
+    :body
+    (multi-term)
+    (spacemacs/toggle-maximize-buffer)))
 
 ;; Sometimes this has an unneeded 'unspecified at the front...
 (defun remove-unspecified ()
