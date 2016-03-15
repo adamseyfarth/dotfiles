@@ -240,6 +240,29 @@ before layers configuration."
     (goto-char (point-min))
     (forward-line winner)))
 
+(defvar faces-to-unhighlight
+  '(font-lock-keyword-face
+    font-lock-function-name-face
+    font-lock-builtin-face
+    font-lock-variable-name-face
+    font-lock-type-face
+    font-lock-preprocessor-face))
+
+(defun unhighlight-remappings ()
+  "Turn off most syntax highlighting for current buffer (a la this guy:
+https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
+  (interactive)
+  (dolist (face faces-to-unhighlight)
+    (face-remap-add-relative face 'default))
+  (face-remap-add-relative 'font-lock-string-face 'italic 'default)
+  (face-remap-add-relative 'link 'underline 'default)
+  (face-remap-add-relative 'font-lock-constant-face 'bold 'italic 'default))
+
+(defun clear-remapping-alist ()
+  "Clear the remapping list.  Meant to undo effects of unhighlight-remappings."
+  (interactive)
+  (setq face-remapping-alist nil))
+
 (defun dotspacemacs/config ()
   "Configuration function.
 
@@ -249,6 +272,8 @@ before layers configuration."
   (spacemacs/set-leader-keys "\\r" 'goto-random-line)
   (spacemacs/set-leader-keys "\\ TAB" 'yas-expand)
   (spacemacs/set-leader-keys "\\ g" 'gnus-summary-insert-new-articles)
+  (spacemacs/set-leader-keys "\\ s f" 'unhighlight-remappings)
+  (spacemacs/set-leader-keys "\\ s n" 'clear-remapping-alist)
   (setq-default typo-language 'English)
   (setq-default indent-tabs-mode nil)
   (add-hook 'gnus-group-mode-hook
@@ -265,7 +290,8 @@ before layers configuration."
   (setq dotspacemacs-auto-resume-layouts t)
   (setq-default gnus-thread-sort-functions '(gnus-thread-sort-by-date))
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "<M-return>" 'eval-print-last-sexp)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode
+    "<M-return>" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'term-mode "j" 'term-line-mode)
   (evil-leader/set-key-for-mode 'term-mode "k" 'term-char-mode)
   (require 'smtpmail)
@@ -326,7 +352,7 @@ before layers configuration."
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(magit-diff-use-overlays nil)
  '(multi-term-program "/usr/bin/zsh")
- '(org-agenda-files nil)
+ '(org-agenda-files (quote ("~/private/work.org")))
  '(org-capture-templates
    (quote
     (("e" "Normal entry" entry
