@@ -246,7 +246,9 @@ before layers configuration."
     font-lock-builtin-face
     font-lock-variable-name-face
     font-lock-type-face
-    font-lock-preprocessor-face))
+    font-lock-preprocessor-face
+    org-document-info
+    org-document-info-keyword))
 
 (defun unhighlight-remappings ()
   "Turn off most syntax highlighting for current buffer (a la this guy:
