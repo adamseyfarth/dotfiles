@@ -26,7 +26,7 @@ prompt_tail=\
 )%{$fg_bold[black]%}╰─$(timestamp)%{$reset_color%}$(git_prompt_info)'
 
 prompt_head=\
-'%{$fg_bold[black]%}╭─%n@%m:%{$reset_color%}%~/$(prompt_char)
+'%{$fg_bold[black]%}╭─%n@%m:%{$fg_bold[blue]%}%~/%{$reset_color%}$(prompt_char)
 '
 
 PROMPT=\
