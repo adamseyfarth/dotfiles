@@ -1,5 +1,9 @@
-source /etc/zprofile
-source /etc/profile.d/autojump.zsh
+function load () {
+    test -f "$1" && source "$1"
+}
+load /etc/zprofile
+load /etc/profile.d/autojump.zsh
+
 source $HOME/dotfiles/antigen/antigen.zsh
 antigen use oh-my-zsh
 # antigen theme tjkirch
@@ -33,7 +37,7 @@ ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[assign]=none
 
-alias ls="ls -F"
+alias ls="ls --color"
 alias en="emacsclient -n"
 
 function ls_on_chdir() {
