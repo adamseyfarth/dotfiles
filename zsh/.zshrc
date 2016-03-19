@@ -37,7 +37,7 @@ ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[assign]=none
 
-alias ls="ls --color"
+alias ls="ls -F --color"
 alias en="emacsclient -n"
 
 function ls_on_chdir() {
