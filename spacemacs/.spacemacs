@@ -116,7 +116,7 @@ before layers configuration."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed.
-   dotspacemacs-startup-banner 3
+   dotspacemacs-startup-banner 'official
    ;; List of items to show in the startup buffer. If nil it is disabled.
    ;; Possible values are: `recents' `bookmarks' `projects'."
    dotspacemacs-startup-lists '(projects recents)
@@ -353,7 +353,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  '(fci-rule-color "#073642" t)
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(magit-diff-use-overlays nil)
- '(multi-term-program "/usr/bin/zsh")
+ '(multi-term-program "zsh")
  '(org-agenda-files (quote ("~/private/work.org")))
  '(org-capture-templates
    (quote
