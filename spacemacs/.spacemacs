@@ -193,7 +193,8 @@ before layers configuration."
    dotspacemacs-smartparens-strict-mode nil
    ;; Select a scope to highlight delimiters. Possible value is `all',
    ;; `current' or `nil'. Default is `all'
-   dotspacemacs-highlight-delimiters nil
+   ;; `any' means to use rainbow-delimiters but not highlight-parentheses
+   dotspacemacs-highlight-delimiters 'any
    ;; If non nil advises quit functions to keep server open when quitting.
    dotspacemacs-persistent-server nil
    ;; List of search tool executable names. Spacemacs uses the first installed
