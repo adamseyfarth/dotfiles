@@ -18,7 +18,7 @@ function timestamp() {
 }
 
 function preexec_timestamp() {
-    echo ${fg_bold[black]}│ $(timestamp)${fg_no_bold[white]}
+    echo ${fg_bold[black]}│ $(timestamp)${reset_color}
 }
 
 prompt_tail=\
