@@ -278,6 +278,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (spacemacs/set-leader-keys "\\ s n" 'clear-remapping-alist)
   (setq-default typo-language 'English)
   (setq-default indent-tabs-mode nil)
+  (add-hook 'prog-mode-hook 'unhighlight-remappings)
   (add-hook 'gnus-group-mode-hook
             ;; list all the subscribed groups, even if they contain zero unread
             ;; messages
