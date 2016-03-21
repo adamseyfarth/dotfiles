@@ -61,17 +61,13 @@
      rust
      octave
      shell-scripts
-     ;; finance
      gtags
      ;; slime
-     ;; irc
      git
      semantic
      c-c++
      csharp
-     ;; perspectives
      yaml
-     ;; themes-megapack
      deft
      typography
      agda
