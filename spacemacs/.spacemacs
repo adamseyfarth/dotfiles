@@ -47,7 +47,7 @@
             shell-default-height 48
             shell-default-position 'bottom
             shell-default-shell 'multi-term
-            shell-default-term-shell "/usr/bin/zsh"
+            shell-default-term-shell "zsh"
             )
      syntax-checking
      version-control
@@ -247,20 +247,38 @@ before layers configuration."
     org-document-info
     org-document-info-keyword))
 
+(defvar faces-to-underline
+  '(font-lock-string-face
+    font-lock-constant-face
+    link))
+
 (defun unhighlight-remappings ()
   "Turn off most syntax highlighting for current buffer (a la this guy:
 https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (interactive)
   (dolist (face faces-to-unhighlight)
     (face-remap-add-relative face 'default))
-  (face-remap-add-relative 'font-lock-string-face 'italic 'default)
-  (face-remap-add-relative 'link 'underline 'default)
-  (face-remap-add-relative 'font-lock-constant-face 'bold 'italic 'default))
+  (dolist (face faces-to-underline)
+    (face-remap-add-relative face 'underline 'default)))
 
 (defun clear-remapping-alist ()
   "Clear the remapping list.  Meant to undo effects of unhighlight-remappings."
   (interactive)
   (setq face-remapping-alist nil))
+
+(defun terminal-init-gnome ()
+  "Terminal initialization function for gnome-terminal."
+
+  ;; This is a dirty hack that I accidentally stumbled across:
+  ;;  initializing "rxvt" first and _then_ "xterm" seems
+  ;;  to make the colors work... although I have no idea why.
+  (tty-run-terminal-initialization (selected-frame) "rxvt")
+  (tty-run-terminal-initialization (selected-frame) "xterm"))
+
+(defun on-frame-open (&optional frame)
+  "If the FRAME created in terminal don't load background color."
+  (unless (display-graphic-p frame)
+    (set-face-background 'default "unspecified-bg" frame)))
 
 (defun dotspacemacs/config ()
   "Configuration function.
@@ -273,8 +291,12 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (spacemacs/set-leader-keys "\\ g" 'gnus-summary-insert-new-articles)
   (spacemacs/set-leader-keys "\\ s f" 'unhighlight-remappings)
   (spacemacs/set-leader-keys "\\ s n" 'clear-remapping-alist)
+  (spacemacs/toggle-highlight-current-line-globally-off)
+  (spacemacs/toggle-semantic-stickyfunc-globally-off)
   (setq-default typo-language 'English)
   (setq-default indent-tabs-mode nil)
+  (add-hook 'after-make-frame-functions 'on-frame-open)
+  (unless (display-graphic-p) (set-face-background 'default "unspecified-bg" (selected-frame)))
   (add-hook 'prog-mode-hook 'unhighlight-remappings)
   (add-hook 'gnus-group-mode-hook
             ;; list all the subscribed groups, even if they contain zero unread
