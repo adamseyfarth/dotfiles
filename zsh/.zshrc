@@ -6,12 +6,14 @@ load /etc/profile.d/autojump.zsh
 
 source $HOME/dotfiles/antigen/antigen.zsh
 antigen use oh-my-zsh
-# antigen theme tjkirch
+# loosely inspired by tjkirch
 antigen theme $HOME/dotfiles/zsh aseyfarth
 
 antigen bundles <<EOBUNDLES
     command-not-found
     zsh-users/zsh-syntax-highlighting
+    zsh-users/zsh-autosuggestions
+    zsh-users/zsh-completions
 EOBUNDLES
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
