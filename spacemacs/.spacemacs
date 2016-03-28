@@ -29,6 +29,9 @@
            '(("nrlssc.navy.mil" (address "adam.seyfarth@nrlssc.navy.mil")))
            gnus-read-active-file 'some
            gnus-fetch-old-headers nil
+           message-citation-line-function
+           'message-insert-formatted-citation-line
+           message-citation-line-format "[%Y-%m-%d %T%z] %f:"
            )
      auto-completion
      emacs-lisp
