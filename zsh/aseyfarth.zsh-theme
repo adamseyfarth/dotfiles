@@ -1,15 +1,29 @@
 # -*- mode: shell-script; -*-
 
-ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg_bold[black]%}("
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg_bold[black]%})%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[red]%}⚡"
+color='%{$fg_bold[black]%}'
+ul='╭'
+ll='╰'
+bar='│'
+dash='─'
+
+if [ $TERM = linux ]; then
+    color=''
+    ul='l'
+    ll='m'
+    bar='x'
+    dash='q'
+fi
+
+ZSH_THEME_GIT_PROMPT_PREFIX=" ${color}("
+ZSH_THEME_GIT_PROMPT_SUFFIX="${color})%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[red]%}⚡%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
 function prompt_char {
     if [ $UID -eq 0 ]; then
         echo "%{$fg[red]%}#%{$reset_color%}"
     else
-        echo "%{$fg_bold[black]%}$%{$reset_color%}"
+        echo ${color}"$%{$reset_color%}"
     fi
 }
 
@@ -18,15 +32,15 @@ function timestamp() {
 }
 
 function preexec_timestamp() {
-    echo ${fg_bold[black]}│ $(timestamp)${reset_color}
+    echo ${color}${bar} $(timestamp)${reset_color}
 }
 
 prompt_tail=\
-'%(?,,%{$fg_bold[black]%}│%{$fg[red]%} FAIL: $?%{$reset_color%}
-)%{$fg_bold[black]%}╰─$(timestamp)%{$reset_color%}$(git_prompt_info)'
+'%(?,,'${color}${bar}' %{$fg[red]%}FAIL: $?%{$reset_color%}
+)'${color}${ll}${dash}'$(timestamp)%{$reset_color%}$(git_prompt_info)'
 
 prompt_head=\
-'%{$fg_bold[black]%}╭─%n@%m:%{$fg_bold[blue]%}%~/%{$reset_color%}$(prompt_char)
+${color}${ul}${dash}'%n@%m:%{$fg_bold[blue]%}%~/%{$reset_color%}$(prompt_char)
 '
 
 PROMPT=\
@@ -34,9 +48,11 @@ PROMPT=\
 
 $prompt_head"
 
-PROMPT2='%{$fg_bold[black]%}%_> %{$reset_color%}'
-PROMPT3='%{$fg_bold[black]%}?# %{$reset_color%}'
-PROMPT4='%{$fg_bold[black]%}+%N:%i> %{$reset_color%}'
+PROMPT2=${color}'%_> %{$reset_color%}'
+PROMPT3=${color}'?# %{$reset_color%}'
+PROMPT4=${color}'+%N:%i> %{$reset_color%}'
+
+RPROMPT=
 
 autoload -U add-zsh-hook
 add-zsh-hook preexec preexec_timestamp
