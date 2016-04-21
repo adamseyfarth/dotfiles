@@ -1,6 +1,7 @@
 # -*- mode: shell-script; -*-
 
-color='%{$fg_bold[black]%}'
+echocolor="$fg_bold[black]"
+color="%{${echocolor}%}"
 ul='╭'
 ll='╰'
 bar='│'
@@ -8,6 +9,7 @@ dash='─'
 
 if [ $TERM = linux ]; then
     color=''
+    echocolor=''
     ul='l'
     ll='m'
     bar='x'
@@ -16,7 +18,7 @@ fi
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" ${color}("
 ZSH_THEME_GIT_PROMPT_SUFFIX="${color})%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[red]%}⚡%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[red]%}𝚫%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
 function prompt_char {
@@ -32,11 +34,11 @@ function timestamp() {
 }
 
 function preexec_timestamp() {
-    echo ${color}${bar} $(timestamp)${reset_color}
+    echo ${echocolor}${bar} $(timestamp)${reset_color}
 }
 
 prompt_tail=\
-'%(?,,'${color}${bar}' %{$fg[red]%}FAIL: $?%{$reset_color%}
+'%(?,,'${color}${bar}' %{$fg[red]%}exit status: $?%{$reset_color%}
 )'${color}${ll}${dash}'$(timestamp)%{$reset_color%}$(git_prompt_info)'
 
 prompt_head=\
