@@ -35,17 +35,18 @@
            )
      auto-completion
      emacs-lisp
-     (org :variables
-          org-export-allow-bind-keywords t
-          org-agenda-files '("~/private/work.org")
-          org-pomodoro-length 24
-          org-pomodoro-audio-player "mplayer"
-          org-pomodoro-finished-sound
-          "/home/aseyfarth/.emacs.d/elpa/org-pomodoro-20150803.530/resources/bell_multiple.wav"
-          org-pomodoro-start-sound-p t
-          org-pomodoro-ticking-sound-states '(:pomodoro)
-          org-pomodoro-ticking-sound-p t
-          )
+     org
+     ;; (org :variables
+     ;;      org-export-allow-bind-keywords t
+     ;;      org-agenda-files '("~/private/work.org")
+     ;;      org-pomodoro-length 24
+     ;;      org-pomodoro-audio-player "mplayer"
+     ;;      org-pomodoro-finished-sound
+     ;;      "/home/aseyfarth/.emacs.d/elpa/org-pomodoro-20150803.530/resources/bell_multiple.wav"
+     ;;      org-pomodoro-start-sound-p t
+     ;;      org-pomodoro-ticking-sound-states '(:pomodoro)
+     ;;      org-pomodoro-ticking-sound-p t
+     ;;      )
      (shell :variables
             shell-default-height 48
             shell-default-position 'bottom
@@ -86,6 +87,8 @@
      base16-theme
      smtpmail-multi
      dash dash-functional
+     gnus-desktop-notify
+     bbdb
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages
@@ -250,7 +253,7 @@ before layers configuration."
     org-document-info
     org-document-info-keyword))
 
-(defvar faces-to-underline
+(defvar faces-to-italic
   '(font-lock-string-face
     font-lock-constant-face
     link))
@@ -261,8 +264,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (interactive)
   (dolist (face faces-to-unhighlight)
     (face-remap-add-relative face 'default))
-  (dolist (face faces-to-underline)
-    (face-remap-add-relative face 'underline 'default)))
+  (dolist (face faces-to-italic)
+    (face-remap-add-relative face 'italic 'default)))
 
 (defun clear-remapping-alist ()
   "Clear the remapping list.  Meant to undo effects of unhighlight-remappings."
@@ -342,7 +345,18 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     :binding "t"
     :body
     (multi-term)
-    (spacemacs/toggle-maximize-buffer)))
+    (spacemacs/toggle-maximize-buffer))
+  (require 'gnus-desktop-notify)
+  (setq gnus-desktop-notify-function 'gnus-desktop-notify-exec
+        gnus-desktop-notify-exec-program "notify-send -i ~/dotfiles/emacs.png")
+  (gnus-desktop-notify-mode)
+  (gnus-demon-add-scanmail)
+  (require 'bbdb)
+  (bbdb-initialize 'gnus 'message)
+  (bbdb-mua-auto-update-init 'gnus 'message)
+  (setq bbdb-mua-update-interactive-p '(query . create))
+  (setq bbdb-message-all-addresses t)
+  )
 
 ;; Sometimes this has an unneeded 'unspecified at the front...
 (defun remove-unspecified ()
