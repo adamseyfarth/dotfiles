@@ -376,6 +376,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  '(ahs-idle-interval 0.25)
  '(ahs-idle-timer 0 t)
  '(ahs-inhibit-face-list nil)
+ '(bbdb-mua-pop-up nil)
  '(compilation-message-face (quote default))
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#839496")
