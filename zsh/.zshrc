@@ -46,3 +46,6 @@ function ls_on_chdir() {
     ls
 }
 add-zsh-hook chpwd ls_on_chdir
+
+export NVM_DIR="/home/aseyfarth@margeo.nrlssc.navy.mil/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
