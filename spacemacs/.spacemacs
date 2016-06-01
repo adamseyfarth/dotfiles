@@ -316,7 +316,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
   (setq sentence-end-double-space t)
   (setq dotspacemacs-auto-resume-layouts t)
-  (setq-default gnus-thread-sort-functions '(gnus-thread-sort-by-date))
+  (setq-default gnus-thread-sort-functions
+                '(gnus-thread-sort-by-most-recent-date))
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode
     "<M-return>" 'eval-print-last-sexp)
