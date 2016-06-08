@@ -76,6 +76,8 @@
      typography
      agda
      idris
+     javascript
+     react
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -89,6 +91,7 @@
      dash dash-functional
      gnus-desktop-notify
      bbdb
+     web-mode
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages
