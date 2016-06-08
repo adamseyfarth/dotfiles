@@ -302,7 +302,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (setq-default typo-language 'English)
   (setq-default indent-tabs-mode nil)
   (add-hook 'after-make-frame-functions 'on-frame-open)
-  (unless (display-graphic-p) (set-face-background 'default "unspecified-bg" (selected-frame)))
+  (unless (display-graphic-p)
+    (set-face-background 'default "unspecified-bg" (selected-frame)))
   (add-hook 'prog-mode-hook 'unhighlight-remappings)
   (add-hook 'gnus-group-mode-hook
             ;; list all the subscribed groups, even if they contain zero unread
@@ -316,8 +317,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
   (setq sentence-end-double-space t)
   (setq dotspacemacs-auto-resume-layouts t)
-  (setq-default gnus-thread-sort-functions
-                '(gnus-thread-sort-by-most-recent-date))
+  (setq gnus-thread-sort-functions
+        '(gnus-thread-sort-by-number (not gnus-thread-sort-by-most-recent-date)))
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode
     "<M-return>" 'eval-print-last-sexp)
