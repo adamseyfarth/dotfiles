@@ -247,19 +247,23 @@ before layers configuration."
     (forward-line winner)))
 
 (defvar faces-to-unhighlight
-  '(font-lock-keyword-face
+  '(
+    font-lock-keyword-face
     font-lock-function-name-face
     font-lock-builtin-face
     font-lock-variable-name-face
     font-lock-type-face
     font-lock-preprocessor-face
     org-document-info
-    org-document-info-keyword))
+    org-document-info-keyword
+    ))
 
 (defvar faces-to-italic
-  '(font-lock-string-face
+  '(
+    font-lock-string-face
     font-lock-constant-face
-    link))
+    link
+    ))
 
 (defun unhighlight-remappings ()
   "Turn off most syntax highlighting for current buffer (a la this guy:
@@ -318,6 +322,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (add-to-list 'auto-mode-alist '("SConfig\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
+  (add-to-list 'auto-mode-alist '(".eslintrc\\'" . json-mode))
   (setq sentence-end-double-space t)
   (setq dotspacemacs-auto-resume-layouts t)
   (setq gnus-thread-sort-functions
@@ -393,8 +398,10 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  '(erc-hide-list (quote ("JOIN" "NICK" "PART" "QUIT" "MODE")))
  '(expand-region-contract-fast-key "V")
  '(expand-region-reset-fast-key "r")
- '(fci-rule-color "#073642" t)
+ '(fci-rule-color "#073642")
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
+ '(js2-include-node-externs t)
+ '(js2-strict-trailing-comma-warning nil)
  '(magit-diff-use-overlays nil)
  '(multi-term-program "zsh")
  '(org-agenda-files (quote ("~/private/work.org")))
@@ -457,4 +464,9 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+ '(js2-function-call ((t nil)))
+ '(js2-function-param ((t nil)))
+ '(js2-instance-member ((t nil)))
+ '(js2-private-function-call ((t nil)))
+ '(js2-private-member ((t nil))))
