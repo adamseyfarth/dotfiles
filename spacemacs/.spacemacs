@@ -220,6 +220,21 @@ before layers configuration."
   (interactive)
   (gnus-group-list-all-groups 5))
 
+(defun make-evil-cursors-in-region ()
+  (interactive)
+  (when (region-active-p)
+    (let ((begin (region-beginning))
+          (end (region-end)))
+      (deactivate-mark)
+      (goto-char end)
+      (backward-char)  ;; `end' is one past the last highlighted char
+      (beginning-of-line)
+      (evil-mc-pause-cursors)
+      (while (> (point) begin)
+        (evil-mc-make-cursor-here)
+        (forward-line -1))
+      (evil-mc-resume-cursors))))
+
 (defun goto-random-line ()
   (interactive)
   (if (region-active-p)
@@ -301,11 +316,12 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
    This function is called at the very end of Spacemacs initialization after
    layers configuration."
   (spacemacs/declare-prefix "\\" "User commands")
-  (spacemacs/set-leader-keys "\\r" 'goto-random-line)
+  (spacemacs/set-leader-keys "\\ r" 'goto-random-line)
   (spacemacs/set-leader-keys "\\ TAB" 'yas-expand)
   (spacemacs/set-leader-keys "\\ g" 'gnus-summary-insert-new-articles)
   (spacemacs/set-leader-keys "\\ s f" 'unhighlight-remappings)
   (spacemacs/set-leader-keys "\\ s n" 'clear-remapping-alist)
+  (spacemacs/set-leader-keys "\\ c" 'make-evil-cursors-in-region)
   (spacemacs/toggle-highlight-current-line-globally-off)
   (add-hook 'prog-mode-hook 'spacemacs/toggle-semantic-stickyfunc-globally-off)
   (add-hook 'prog-mode-hook 'spacemacs/toggle-semantic-stickyfunc-off)
