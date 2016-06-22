@@ -55,8 +55,10 @@
             )
      syntax-checking
      version-control
-     python
+     (python :variables python-test-runner 'pytest)
      clojure
+     emoji
+     games
      haskell
      ipython-notebook
      latex
