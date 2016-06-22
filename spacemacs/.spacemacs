@@ -313,6 +313,17 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
             (lambda () (setq semantic-default-submodes
                              (remove 'global-semantic-stickyfunc-mode
                                      semantic-default-submodes))))
+  (with-eval-after-load 'semantic
+    (setq semantic-default-submodes
+          (remove 'global-semantic-stickyfunc-mode
+                  semantic-default-submodes)))
+  (with-eval-after-load 'stickyfunc-enhance
+    (setq semantic-default-submodes
+          (remove 'global-semantic-stickyfunc-mode
+                  semantic-default-submodes)))
+  (with-eval-after-load 'stickyfunc-enhance
+    (spacemacs/toggle-semantic-stickyfunc-globally-off))
+  (global-evil-mc-mode 1)
   (setq-default typo-language 'English)
   (setq-default indent-tabs-mode nil)
   (add-hook 'after-make-frame-functions 'on-frame-open)
