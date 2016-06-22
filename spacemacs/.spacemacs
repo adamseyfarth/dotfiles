@@ -305,7 +305,12 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (spacemacs/set-leader-keys "\\ s f" 'unhighlight-remappings)
   (spacemacs/set-leader-keys "\\ s n" 'clear-remapping-alist)
   (spacemacs/toggle-highlight-current-line-globally-off)
-  (spacemacs/toggle-semantic-stickyfunc-globally-off)
+  (add-hook 'prog-mode-hook 'spacemacs/toggle-semantic-stickyfunc-globally-off)
+  (add-hook 'prog-mode-hook 'spacemacs/toggle-semantic-stickyfunc-off)
+  (add-hook 'prog-mode-hook
+            (lambda () (setq semantic-default-submodes
+                             (remove 'global-semantic-stickyfunc-mode
+                                     semantic-default-submodes))))
   (setq-default typo-language 'English)
   (setq-default indent-tabs-mode nil)
   (add-hook 'after-make-frame-functions 'on-frame-open)
