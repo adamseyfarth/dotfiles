@@ -310,7 +310,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (unless (display-graphic-p frame)
     (set-face-background 'default "unspecified-bg" frame)))
 
-(defun dotspacemacs/config ()
+(defun dotspacemacs/user-config ()
   "Configuration function.
 
    This function is called at the very end of Spacemacs initialization after
