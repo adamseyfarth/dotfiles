@@ -323,32 +323,20 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (spacemacs/set-leader-keys "\\ s n" 'clear-remapping-alist)
   (spacemacs/set-leader-keys "\\ c" 'make-evil-cursors-in-region)
   (spacemacs/toggle-highlight-current-line-globally-off)
-  (add-hook 'prog-mode-hook 'spacemacs/toggle-semantic-stickyfunc-globally-off)
-  (add-hook 'prog-mode-hook 'spacemacs/toggle-semantic-stickyfunc-off)
-  (add-hook 'prog-mode-hook
-            (lambda () (setq semantic-default-submodes
-                             (remove 'global-semantic-stickyfunc-mode
-                                     semantic-default-submodes))))
   (with-eval-after-load 'semantic
     (setq semantic-default-submodes
-          (remove 'global-semantic-stickyfunc-mode
-                  semantic-default-submodes)))
-  (with-eval-after-load 'stickyfunc-enhance
-    (setq semantic-default-submodes
-          (remove 'global-semantic-stickyfunc-mode
-                  semantic-default-submodes)))
-  (with-eval-after-load 'stickyfunc-enhance
-    (spacemacs/toggle-semantic-stickyfunc-globally-off))
+          (remove 'global-semantic-stickyfunc-mode semantic-default-submodes)))
   (global-evil-mc-mode 1)
-  (setq-default typo-language 'English)
-  (setq-default indent-tabs-mode nil)
+  (setq-default typo-language 'English
+                indent-tabs-mode nil
+                tab-width 8
+                c-basic-offset 4)
   (add-hook 'after-make-frame-functions 'on-frame-open)
   (unless (display-graphic-p)
     (set-face-background 'default "unspecified-bg" (selected-frame)))
   (add-hook 'prog-mode-hook 'unhighlight-remappings)
   (add-hook 'gnus-group-mode-hook
-            ;; list all the subscribed groups, even if they contain zero unread
-            ;; messages
+            ;; list all subscribed groups, even with zero unread messages
             (lambda () (local-set-key "o" 'gnus-list-all-subscribed)))
   (defvar smtp-accounts
     '((ssl "adam.seyfarth@nrlssc.navy.mil" "mail.margeo.nrlssc.navy.mil"
@@ -360,7 +348,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (setq sentence-end-double-space t)
   (setq dotspacemacs-auto-resume-layouts t)
   (setq gnus-thread-sort-functions
-        '(gnus-thread-sort-by-number (not gnus-thread-sort-by-most-recent-date)))
+        '((not gnus-thread-sort-by-most-recent-date)))
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode
     "<M-return>" 'eval-print-last-sexp)
@@ -432,7 +420,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  '(erc-hide-list (quote ("JOIN" "NICK" "PART" "QUIT" "MODE")))
  '(expand-region-contract-fast-key "V")
  '(expand-region-reset-fast-key "r")
- '(fci-rule-color "#073642")
+ '(fci-rule-color "#073642" t)
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(js2-include-node-externs t)
  '(js2-strict-trailing-comma-warning nil)
@@ -460,6 +448,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  '(paradox-github-token t)
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
+ '(python-shell-interpreter "ipython")
  '(ring-bell-function (quote ignore) t)
  '(safe-local-variable-values
    (quote
