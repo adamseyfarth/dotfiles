@@ -18,8 +18,8 @@
      (gnus :variables
            gnus-secondary-select-methods
            '((nnimap "mail.margeo.nrlssc.navy.mil")
-             ;; (nntp "gmane" (nntp-address "news.gmane.org"))
-             ;; (nntp "news.gwene.org")
+             (nntp "gmane" (nntp-address "news.gmane.org"))
+             (nntp "news.gwene.org")
              ;; (nnimap "imap.gmail.com"
              ;;         (nnimap-server-port "imaps")
              ;;         (nnimap-stream ssl))
