@@ -345,6 +345,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
   (add-to-list 'auto-mode-alist '(".eslintrc\\'" . json-mode))
+  (add-to-list 'auto-mode-alist '("\\.F\\'" . f90-mode))
   (setq sentence-end-double-space t)
   (setq dotspacemacs-auto-resume-layouts t)
   (setq gnus-thread-sort-functions
