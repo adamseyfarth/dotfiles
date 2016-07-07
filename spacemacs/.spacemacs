@@ -31,7 +31,7 @@
            gnus-fetch-old-headers nil
            message-citation-line-function
            'message-insert-formatted-citation-line
-           message-citation-line-format "[%Y-%m-%d %H:$M%z] %f:"
+           message-citation-line-format "[%Y-%m-%d %H:%M%z] %f:"
            )
      auto-completion
      emacs-lisp
