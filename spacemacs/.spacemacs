@@ -355,6 +355,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     "<M-return>" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'term-mode "j" 'term-line-mode)
   (evil-leader/set-key-for-mode 'term-mode "k" 'term-char-mode)
+  (evil-set-initial-state 'term-mode 'emacs)
   (require 'smtpmail)
   (setq send-mail-function 'smtpmail-send-it
         message-send-mail-function 'smtpmail-send-it
