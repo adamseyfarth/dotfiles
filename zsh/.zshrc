@@ -39,6 +39,8 @@ ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[assign]=none
 
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=cyan
+
 alias ls="ls -F --color"
 alias en="emacsclient -n"
 
