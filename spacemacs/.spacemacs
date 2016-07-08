@@ -276,7 +276,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (setq dotspacemacs-auto-resume-layouts t)
   (with-eval-after-load 'gnus
     (setq-default gnus-thread-sort-functions
-                  '((not gnus-thread-sort-by-most-recent-date))))
+                  '((not gnus-thread-sort-by-most-recent-date)))
+    (setq-default  gnus-summary-line-format "%U%R%z %(%&user-date;  %-16,16f  %B %s%)\n"))
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode
     "<M-return>" 'eval-print-last-sexp)
