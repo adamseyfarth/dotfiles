@@ -7,7 +7,12 @@
    dotspacemacs-configuration-layer-path '()
    dotspacemacs-configuration-layers
    '(
+     ;; Document related
      markdown
+     latex
+     yaml
+     typography
+     deft
      org
      ;; (org :variables
      ;;      org-export-allow-bind-keywords t
@@ -20,7 +25,44 @@
      ;;      org-pomodoro-ticking-sound-states '(:pomodoro)
      ;;      org-pomodoro-ticking-sound-p t
      ;;      )
-     latex
+
+     ;; Tooling
+     (auto-completion :variables
+                      auto-completion-return-key-behavior nil
+                      auto-completion-tab-key-behavior 'complete
+                      )
+     syntax-checking
+     version-control
+     git
+     gtags
+     semantic
+     (shell :variables
+            shell-default-height 48
+            shell-default-position 'bottom
+            shell-default-shell 'multi-term
+            shell-default-term-shell "zsh"
+            )
+
+     ;; Languages
+     shell-scripts
+     (python :variables python-test-runner 'pytest)
+     ipython-notebook
+     octave
+     haskell
+     idris
+     emacs-lisp
+     racket
+     scheme
+     clojure
+     rust
+     c-c++
+     csharp
+     javascript
+     react
+
+     ;; Other
+     emoji
+     games
      (gnus :variables
            gnus-secondary-select-methods
            '((nnimap "mail.margeo.nrlssc.navy.mil")
@@ -39,43 +81,8 @@
            'message-insert-formatted-citation-line
            message-citation-line-format "[%Y-%m-%d %H:%M%z] %f:"
            )
-     (auto-completion :variables
-                      auto-completion-return-key-behavior nil
-                      auto-completion-tab-key-behavior 'complete
-                      )
-     emacs-lisp
-     (shell :variables
-            shell-default-height 48
-            shell-default-position 'bottom
-            shell-default-shell 'multi-term
-            shell-default-term-shell "zsh"
-            )
-     syntax-checking
-     version-control
-     (python :variables python-test-runner 'pytest)
-     clojure
-     emoji
-     games
-     haskell
-     ipython-notebook
-     racket
-     scheme
-     rust
-     octave
-     shell-scripts
-     gtags
-     git
-     semantic
-     c-c++
-     csharp
-     yaml
-     deft
-     typography
-     agda
-     idris
-     javascript
-     react
      )
+
    dotspacemacs-additional-packages
    '(
      monky
@@ -99,10 +106,14 @@ before layers configuration."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
+   dotspacemacs-elpa-https t
+   dotspacemacs-elpa-timeout 5
+   dotspacemacs-check-for-update t
    dotspacemacs-editing-style 'vim
    dotspacemacs-verbose-loading nil
    dotspacemacs-startup-banner 'official
    dotspacemacs-startup-lists '(projects recents)
+   dotspacemacs-startup-recent-list-size 12
    dotspacemacs-themes '(base16-ashes-dark
                          base16-ashes-light
                          solarized-dark
@@ -118,12 +129,22 @@ before layers configuration."
    dotspacemacs-leader-key "SPC"
    dotspacemacs-emacs-leader-key "M-m"
    dotspacemacs-major-mode-leader-key ","
-   dotspacemacs-major-mode-emacs-leader-key "C-M-m"  ;; aka M-RET
+   dotspacemacs-major-mode-emacs-leader-key "C-M-m"  ; aka M-RET
+   dotspacemacs-distinguish-gui-tab nil
    dotspacemacs-command-key ":"
+   dotspacemacs-remap-Y-to-y$ t
+   dotspacemacs-default-layout-name "Default"
+   dotspacemacs-display-default-layout nil
+   dotspacemacs-auto-resume-layouts t
    dotspacemacs-auto-save-file-location 'cache
+   dotspacemacs-max-rollback-slots 6
    dotspacemacs-use-ido nil
+   dotspacemacs-helm-resize nil
+   dotspacemacs-helm-no-header nil
+   dotspacemacs-helm-position 'bottom
    dotspacemacs-enable-paste-micro-state nil
-   dotspacemacs-guide-key-delay 0.4
+   dotspacemacs-which-key-delay 0.4
+   dotspacemacs-which-key-position 'bottom
    dotspacemacs-loading-progress-bar t
    dotspacemacs-fullscreen-at-startup nil
    dotspacemacs-fullscreen-use-non-native nil
@@ -132,11 +153,13 @@ before layers configuration."
    dotspacemacs-inactive-transparency 90
    dotspacemacs-mode-line-unicode-symbols t
    dotspacemacs-smooth-scrolling t
-   dotspacemacs-smartparens-strict-mode nil
+   dotspacemacs-line-numbers t
+   dotspacemacs-smartparens-strict-mode t
    dotspacemacs-highlight-delimiters 'any
    dotspacemacs-persistent-server nil
    dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
    dotspacemacs-default-package-repository nil
+   dotspacemacs-whitespace-cleanup nil
    ))
 
 (defun gnus-list-all-subscribed ()
@@ -145,6 +168,7 @@ before layers configuration."
   (gnus-group-list-all-groups 5))
 
 (defun make-evil-cursors-in-region ()
+  "Using evil-mc, make a cursor at the beginning of each line in region"
   (interactive)
   (when (region-active-p)
     (let ((begin (region-beginning))
@@ -224,8 +248,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   "Terminal initialization function for gnome-terminal."
 
   ;; This is a dirty hack that I accidentally stumbled across:
-  ;;  initializing "rxvt" first and _then_ "xterm" seems
-  ;;  to make the colors work... although I have no idea why.
+  ;; Initializing "rxvt" first and _then_ "xterm" seems
+  ;; to make the colors work... although I have no idea why.
   (tty-run-terminal-initialization (selected-frame) "rxvt")
   (tty-run-terminal-initialization (selected-frame) "xterm"))
 
@@ -235,17 +259,14 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     (set-face-background 'default "unspecified-bg" frame)))
 
 (defun fight-stickyfunc ()
+  "Do whatever it takes to disable semantic-stickyfunc-mode"
   (with-eval-after-load 'semantic
     (setq-default semantic-default-submodes
                   (remove 'global-semantic-stickyfunc-mode
                           semantic-default-submodes))
     (spacemacs/toggle-semantic-stickyfunc-globally-off)))
 
-(defun dotspacemacs/user-config ()
-  "Configuration function.
-
-   This function is called at the very end of Spacemacs initialization after
-   layers configuration."
+(defun config-keybindings ()
   (spacemacs/declare-prefix "\\" "User commands")
   (spacemacs/set-leader-keys "\\ r" 'goto-random-line)
   (spacemacs/set-leader-keys "\\ TAB" 'yas-expand)
@@ -254,64 +275,54 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (spacemacs/set-leader-keys "\\ s n" 'clear-remapping-alist)
   (spacemacs/set-leader-keys "\\ c" 'make-evil-cursors-in-region)
   (spacemacs/set-leader-keys "\\ j" 'semantic-ia-fast-jump)
-  (spacemacs/toggle-highlight-current-line-globally-off)
-  (add-hook 'semantic-mode-hook 'fight-stickyfunc)
-  (global-evil-mc-mode 1)
-  (setq-default typo-language 'English
-                indent-tabs-mode nil
-                tab-width 8
-                c-basic-offset 4)
-  (add-hook 'after-make-frame-functions 'on-frame-open)
-  (unless (display-graphic-p)
-    (set-face-background 'default "unspecified-bg" (selected-frame)))
-  (add-hook 'prog-mode-hook 'unhighlight-remappings)
   (add-hook 'gnus-group-mode-hook
             ;; list all subscribed groups, even with zero unread messages
             (lambda () (local-set-key "o" 'gnus-list-all-subscribed)))
-  (defvar smtp-accounts
-    '((ssl "adam.seyfarth@nrlssc.navy.mil" "mail.margeo.nrlssc.navy.mil"
-           587 "MARGEO\aseyfarth" nil)))
-  (add-to-list 'auto-mode-alist '("SConfig\\'" . python-mode))
-  (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
-  (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
-  (add-to-list 'auto-mode-alist '(".eslintrc\\'" . json-mode))
-  (add-to-list 'auto-mode-alist '("\\.F\\'" . f90-mode))
-  (setq sentence-end-double-space t)
-  (setq dotspacemacs-auto-resume-layouts t)
-  (with-eval-after-load 'gnus
-    (setq-default gnus-thread-sort-functions
-                  '((not gnus-thread-sort-by-most-recent-date)))
-    (setq-default  gnus-summary-line-format "%U%R%z %(%&user-date;  %-16,16f  %B %s%)\n"))
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode
     "<M-return>" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'term-mode "j" 'term-line-mode)
   (evil-leader/set-key-for-mode 'term-mode "k" 'term-char-mode)
-  (evil-set-initial-state 'term-mode 'emacs)
+  )
+
+(defun config-visuals ()
+  (spacemacs/toggle-highlight-current-line-globally-off)
+  (add-hook 'semantic-mode-hook 'fight-stickyfunc)
+  (add-hook 'after-make-frame-functions 'on-frame-open)
+  (add-hook 'prog-mode-hook 'unhighlight-remappings)
+  (unless (display-graphic-p)
+    (set-face-background 'default "unspecified-bg" (selected-frame))))
+
+(defun config-filetypes ()
+  (add-to-list 'auto-mode-alist '("SConfig\\'" . python-mode))
+  (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
+  (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
+  (add-to-list 'auto-mode-alist '(".eslintrc\\'" . json-mode))
+  (add-to-list 'auto-mode-alist '("\\.F\\'" . f90-mode))
+  )
+
+(defun config-email ()
   (require 'smtpmail)
+  (defvar smtp-accounts
+    '((ssl "adam.seyfarth@nrlssc.navy.mil" "mail.margeo.nrlssc.navy.mil"
+           587 "MARGEO\aseyfarth" nil)))
+  (with-eval-after-load 'gnus
+    (setq-default
+     gnus-thread-sort-functions '((not gnus-thread-sort-by-most-recent-date))
+     gnus-summary-line-format "%U%R%z %(%&user-date;  %-16,16f  %B %s%)\n"))
   (setq send-mail-function 'smtpmail-send-it
         message-send-mail-function 'smtpmail-send-it
         mail-from-style nil
         user-full-name "Adam Seyfarth"
         user-mail-address "adam.seyfarth@nrlssc.navy.mil"
-        ;; message-signature-file "~/.signature"
         smtpmail-debug-info t
-        smtpmail-debug-verb t)
-  (setq starttls-use-gnutls t
+        smtpmail-debug-verb t
+        starttls-use-gnutls t
         starttls-gnutls-program "gnutls-cli"
         starttls-extra-arguments nil
         smtpmail-smtp-server "mail.margeo.nrlssc.navy.mil"
         smtpmail-smtp-service "587"
         smtpmail-auth-credentials "~/.authinfo")
-  (spacemacs|define-custom-layout "@Gnus"
-    :binding "g"
-    :body
-    (gnus))
-  (spacemacs|define-custom-layout "@Term"
-    :binding "t"
-    :body
-    (multi-term)
-    (spacemacs/toggle-maximize-buffer))
   (require 'gnus-desktop-notify)
   (setq gnus-desktop-notify-function 'gnus-desktop-notify-exec
         gnus-desktop-notify-exec-program "notify-send -i ~/dotfiles/emacs.png")
@@ -320,15 +331,48 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (require 'bbdb)
   (bbdb-initialize 'gnus 'message)
   (bbdb-mua-auto-update-init 'gnus 'message)
-  (setq bbdb-mua-update-interactive-p '(query . create))
-  (setq bbdb-message-all-addresses t)
-  )
+  (setq bbdb-mua-update-interactive-p '(query . create)
+        bbdb-message-all-addresses t))
+
+(defun config-layouts ()
+  (spacemacs|define-custom-layout "@Gnus"
+    :binding "g"
+    :body
+    (gnus))
+  (spacemacs|define-custom-layout "@Term"
+    :binding "t"
+    :body
+    (multi-term)
+    (spacemacs/toggle-maximize-buffer)))
+
+(defun dotspacemacs/user-config ()
+  "Configuration function.
+
+   This function is called at the very end of Spacemacs initialization after
+   layers configuration."
+
+  (config-keybindings)
+  (config-visuals)
+  (config-filetypes)
+  (config-email)
+  (config-layouts)
+
+  ;; Misc
+  (global-evil-mc-mode 1)
+  (evil-set-initial-state 'term-mode 'emacs)
+  (setq-default
+   typo-language 'English
+   indent-tabs-mode nil
+   tab-width 8
+   c-basic-offset 4
+   sentence-end-double-space t
+   ))
 
 ;; Sometimes this has an unneeded 'unspecified at the front...
 (defun remove-unspecified ()
   (setq ansi-term-color-vector
         (let ((lvec (append ansi-term-color-vector nil)))
-          (vconcat (-remove (lambda (elt) (eq elt 'unspecified)) lvec)))))
+          (vconcat (remove 'unspecified lvec)))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
