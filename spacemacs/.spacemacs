@@ -8,6 +8,19 @@
    dotspacemacs-configuration-layers
    '(
      markdown
+     org
+     ;; (org :variables
+     ;;      org-export-allow-bind-keywords t
+     ;;      org-agenda-files '("~/private/work.org")
+     ;;      org-pomodoro-length 24
+     ;;      org-pomodoro-audio-player "mplayer"
+     ;;      org-pomodoro-finished-sound
+     ;;      "/home/aseyfarth/.emacs.d/elpa/org-pomodoro-20150803.530/resources/bell_multiple.wav"
+     ;;      org-pomodoro-start-sound-p t
+     ;;      org-pomodoro-ticking-sound-states '(:pomodoro)
+     ;;      org-pomodoro-ticking-sound-p t
+     ;;      )
+     latex
      (gnus :variables
            gnus-secondary-select-methods
            '((nnimap "mail.margeo.nrlssc.navy.mil")
@@ -26,20 +39,11 @@
            'message-insert-formatted-citation-line
            message-citation-line-format "[%Y-%m-%d %H:%M%z] %f:"
            )
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-return-key-behavior nil
+                      auto-completion-tab-key-behavior 'complete
+                      )
      emacs-lisp
-     org
-     ;; (org :variables
-     ;;      org-export-allow-bind-keywords t
-     ;;      org-agenda-files '("~/private/work.org")
-     ;;      org-pomodoro-length 24
-     ;;      org-pomodoro-audio-player "mplayer"
-     ;;      org-pomodoro-finished-sound
-     ;;      "/home/aseyfarth/.emacs.d/elpa/org-pomodoro-20150803.530/resources/bell_multiple.wav"
-     ;;      org-pomodoro-start-sound-p t
-     ;;      org-pomodoro-ticking-sound-states '(:pomodoro)
-     ;;      org-pomodoro-ticking-sound-p t
-     ;;      )
      (shell :variables
             shell-default-height 48
             shell-default-position 'bottom
@@ -54,7 +58,6 @@
      games
      haskell
      ipython-notebook
-     latex
      racket
      scheme
      rust
