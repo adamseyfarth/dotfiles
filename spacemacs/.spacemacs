@@ -250,6 +250,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (spacemacs/set-leader-keys "\\ s f" 'unhighlight-remappings)
   (spacemacs/set-leader-keys "\\ s n" 'clear-remapping-alist)
   (spacemacs/set-leader-keys "\\ c" 'make-evil-cursors-in-region)
+  (spacemacs/set-leader-keys "\\ j" 'semantic-ia-fast-jump)
   (spacemacs/toggle-highlight-current-line-globally-off)
   (add-hook 'semantic-mode-hook 'fight-stickyfunc)
   (global-evil-mc-mode 1)
