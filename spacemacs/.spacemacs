@@ -231,6 +231,13 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (unless (display-graphic-p frame)
     (set-face-background 'default "unspecified-bg" frame)))
 
+(defun fight-stickyfunc ()
+  (with-eval-after-load 'semantic
+    (setq-default semantic-default-submodes
+                  (remove 'global-semantic-stickyfunc-mode
+                          semantic-default-submodes))
+    (spacemacs/toggle-semantic-stickyfunc-globally-off)))
+
 (defun dotspacemacs/user-config ()
   "Configuration function.
 
@@ -244,9 +251,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (spacemacs/set-leader-keys "\\ s n" 'clear-remapping-alist)
   (spacemacs/set-leader-keys "\\ c" 'make-evil-cursors-in-region)
   (spacemacs/toggle-highlight-current-line-globally-off)
-  (with-eval-after-load 'semantic
-    (setq semantic-default-submodes
-          (remove 'global-semantic-stickyfunc-mode semantic-default-submodes)))
+  (add-hook 'semantic-mode-hook 'fight-stickyfunc)
   (global-evil-mc-mode 1)
   (setq-default typo-language 'English
                 indent-tabs-mode nil
@@ -269,8 +274,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (add-to-list 'auto-mode-alist '("\\.F\\'" . f90-mode))
   (setq sentence-end-double-space t)
   (setq dotspacemacs-auto-resume-layouts t)
-  (setq gnus-thread-sort-functions
-        '((not gnus-thread-sort-by-most-recent-date)))
+  (setq-default gnus-thread-sort-functions
+                '((not gnus-thread-sort-by-most-recent-date)))
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode
     "<M-return>" 'eval-print-last-sexp)
