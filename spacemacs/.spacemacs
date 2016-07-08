@@ -274,8 +274,9 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (add-to-list 'auto-mode-alist '("\\.F\\'" . f90-mode))
   (setq sentence-end-double-space t)
   (setq dotspacemacs-auto-resume-layouts t)
-  (setq-default gnus-thread-sort-functions
-                '((not gnus-thread-sort-by-most-recent-date)))
+  (with-eval-after-load 'gnus
+    (setq-default gnus-thread-sort-functions
+                  '((not gnus-thread-sort-by-most-recent-date))))
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode
     "<M-return>" 'eval-print-last-sexp)
@@ -348,7 +349,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  '(erc-hide-list (quote ("JOIN" "NICK" "PART" "QUIT" "MODE")))
  '(expand-region-contract-fast-key "V")
  '(expand-region-reset-fast-key "r")
- '(fci-rule-color "#073642" t)
+ '(fci-rule-color "#073642")
+ '(gnus-thread-sort-functions (quote ((not gnus-thread-sort-by-most-recent-date))))
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(js2-include-node-externs t)
  '(js2-strict-trailing-comma-warning nil)
