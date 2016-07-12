@@ -92,6 +92,7 @@
      gnus-desktop-notify
      bbdb
      web-mode
+     highlight-indent-guides
      )
    dotspacemacs-excluded-packages
    (if (version< emacs-version "24.4")
@@ -290,6 +291,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (add-hook 'semantic-mode-hook 'fight-stickyfunc)
   (add-hook 'after-make-frame-functions 'on-frame-open)
   (add-hook 'prog-mode-hook 'unhighlight-remappings)
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (setq-default highlight-indent-guides-method 'character)
   (unless (display-graphic-p)
     (set-face-background 'default "unspecified-bg" (selected-frame))))
 
@@ -366,6 +369,10 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
    tab-width 8
    c-basic-offset 4
    sentence-end-double-space t
+   ;; scroll-conservatively nil
+   ;; scroll-margin 5
+   ;; smooth-scroll-margin 5
+   ;; scroll-preserve-screen-position 't
    ))
 
 ;; Sometimes this has an unneeded 'unspecified at the front...
