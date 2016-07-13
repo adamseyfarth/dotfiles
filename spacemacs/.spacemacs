@@ -13,18 +13,31 @@
      yaml
      typography
      deft
-     org
-     ;; (org :variables
-     ;;      org-export-allow-bind-keywords t
-     ;;      org-agenda-files '("~/private/work.org")
-     ;;      org-pomodoro-length 24
-     ;;      org-pomodoro-audio-player "mplayer"
-     ;;      org-pomodoro-finished-sound
-     ;;      "/home/aseyfarth/.emacs.d/elpa/org-pomodoro-20150803.530/resources/bell_multiple.wav"
-     ;;      org-pomodoro-start-sound-p t
-     ;;      org-pomodoro-ticking-sound-states '(:pomodoro)
-     ;;      org-pomodoro-ticking-sound-p t
-     ;;      )
+     (org :variables
+          org-agenda-files (quote ("~/private/work.org"))
+          org-capture-templates
+          '(("e" "Normal entry" entry
+             (file+headline
+              (ort/todo-file)
+              "Entry"))
+            ("c" "Org Repo Checklist Item" checkitem
+             (file+headline
+              (ort/todo-file)
+              "Checklist"))
+            ("t" "Org Repo Todo" entry
+             (file+headline
+              (ort/todo-file)
+              "Todos")
+             "* TODO  %?			%T
+ %i
+ Link: %l
+"))
+          org-export-allow-bind-keywords t
+          org-pomodoro-length 24
+          org-pomodoro-audio-player "mplayer"
+          org-pomodoro-start-sound-p t
+          org-pomodoro-ticking-sound-states '(:pomodoro)
+          org-pomodoro-ticking-sound-p t)
 
      ;; Tooling
      (auto-completion :variables
@@ -33,7 +46,8 @@
                       )
      syntax-checking
      version-control
-     git
+     (git :variables
+          magit-diff-use-overlays nil)
      gtags
      semantic
      (shell :variables
@@ -41,11 +55,17 @@
             shell-default-position 'bottom
             shell-default-shell 'multi-term
             shell-default-term-shell "zsh"
+            multi-term-program "zsh"
             )
 
      ;; Languages
      shell-scripts
-     (python :variables python-test-runner 'pytest)
+     (python :variables
+             python-test-runner 'pytest
+             python-shell-interpreter
+             (concat (getenv "HOME") "/anaconda3/bin/ipython")
+             python-shell-interpreter-args "--simple-prompt -i"
+             )
      ipython-notebook
      octave
      haskell
@@ -57,7 +77,14 @@
      rust
      c-c++
      csharp
-     javascript
+     (javascript :variables
+                 js2-include-node-externs t
+                 js2-strict-trailing-comma-warning nil
+                 js2-function-call '((t nil))
+                 js2-function-param '((t nil))
+                 js2-instance-member '((t nil))
+                 js2-private-function-call '((t nil))
+                 js2-private-member '((t nil)))
      react
 
      ;; Other
@@ -284,6 +311,9 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     "<M-return>" 'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'term-mode "j" 'term-line-mode)
   (evil-leader/set-key-for-mode 'term-mode "k" 'term-char-mode)
+  (setq-default
+   expand-region-contract-fast-key "V"
+   expand-region-reset-fast-key "r")
   )
 
 (defun config-visuals ()
@@ -335,7 +365,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (bbdb-initialize 'gnus 'message)
   (bbdb-mua-auto-update-init 'gnus 'message)
   (setq bbdb-mua-update-interactive-p '(query . create)
-        bbdb-message-all-addresses t))
+        bbdb-message-all-addresses t
+        bbdb-mua-pop-up nil))
 
 (defun config-layouts ()
   (spacemacs|define-custom-layout "@Gnus"
@@ -369,6 +400,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
    tab-width 8
    c-basic-offset 4
    sentence-end-double-space t
+   ring-bell-function 'ignore
    ;; scroll-conservatively nil
    ;; scroll-margin 5
    ;; smooth-scroll-margin 5
@@ -393,7 +425,6 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  '(ahs-idle-interval 0.25)
  '(ahs-idle-timer 0 t)
  '(ahs-inhibit-face-list nil)
- '(bbdb-mua-pop-up nil)
  '(compilation-message-face (quote default))
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#839496")
@@ -403,48 +434,16 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
    (quote
     ("8b584a30417351e60bff667fd6f902c31c8ff53ad7b85e54fcadb17d65e7e9ab" "2159a1f9ea13fb1236b684e8e09d4c40b2f09fff345f7a93d0dacc5f8f9deb27" "03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "240fea1bddbd9b6445860b8cfd323c03c58c92cb4339a3bc65cd9b3c63be9a4a" "4ab89cc4c58408bb799084a4d9be77fe0700b2f1b75809eae330129b4b921b6f" "7545d3bb77926908aadbd525dcb70256558ba05d7c478db6386bfb37fb6c9120" "73ae6088787f6f72ef52f19698b25bc6f0edf47b9e677bf0a85e3a1e8a7a3b17" "f0e69da2cf73c7f153fc09ed3e0ba6e1fd670fec09b8a6a8ed7b4f9efea3b501" "d72836155cd3b3e52fd86a9164120d597cbe12a67609ab90effa54710b2ac53b" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(erc-hide-list (quote ("JOIN" "NICK" "PART" "QUIT" "MODE")))
- '(expand-region-contract-fast-key "V")
- '(expand-region-reset-fast-key "r")
  '(fci-rule-color "#073642")
- '(gnus-thread-sort-functions (quote ((not gnus-thread-sort-by-most-recent-date))))
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
- '(js2-include-node-externs t)
- '(js2-strict-trailing-comma-warning nil)
- '(magit-diff-use-overlays nil)
- '(multi-term-program "zsh")
- '(org-agenda-files (quote ("~/private/work.org")))
- '(org-capture-templates
-   (quote
-    (("e" "Normal entry" entry
-      (file+headline
-       (ort/todo-file)
-       "Entry"))
-     ("c" "Org Repo Checklist Item" checkitem
-      (file+headline
-       (ort/todo-file)
-       "Checklist"))
-     ("t" "Org Repo Todo" entry
-      (file+headline
-       (ort/todo-file)
-       "Todos")
-      "* TODO  %?			%T
- %i
- Link: %l
-"))))
- '(paradox-github-token t)
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
- '(python-shell-interpreter "ipython")
- '(ring-bell-function (quote ignore) t)
  '(safe-local-variable-values
    (quote
     ((org-confirm-babel-evaluate)
      (org-babel-tangle-use-relative-file-links)
      (org-src-preserve-indentation . t))))
- '(send-mail-function (quote smtpmail-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
- '(smtpmail-smtp-server "imap.gmail.com")
- '(smtpmail-smtp-service 25)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
@@ -473,9 +472,4 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
- '(js2-function-call ((t nil)))
- '(js2-function-param ((t nil)))
- '(js2-instance-member ((t nil)))
- '(js2-private-function-call ((t nil)))
- '(js2-private-member ((t nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
