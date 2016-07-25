@@ -13,59 +13,66 @@
      yaml
      typography
      deft
-     (org :variables
-          org-agenda-files (quote ("~/private/work.org"))
-          org-capture-templates
-          '(("e" "Normal entry" entry
-             (file+headline
-              (ort/todo-file)
-              "Entry"))
-            ("c" "Org Repo Checklist Item" checkitem
-             (file+headline
-              (ort/todo-file)
-              "Checklist"))
-            ("t" "Org Repo Todo" entry
-             (file+headline
-              (ort/todo-file)
-              "Todos")
-             "* TODO  %?			%T
+     (org
+      :variables
+      org-agenda-files (quote ("~/private/work.org"))
+      org-capture-templates
+      '(("e" "Normal entry" entry
+         (file+headline
+          (ort/todo-file)
+          "Entry"))
+        ("c" "Org Repo Checklist Item" checkitem
+         (file+headline
+          (ort/todo-file)
+          "Checklist"))
+        ("t" "Org Repo Todo" entry
+         (file+headline
+          (ort/todo-file)
+          "Todos")
+         "* TODO  %?			%T
  %i
  Link: %l
 "))
-          org-export-allow-bind-keywords t
-          org-pomodoro-length 24
-          org-pomodoro-audio-player "mplayer"
-          org-pomodoro-start-sound-p t
-          org-pomodoro-ticking-sound-states '(:pomodoro)
-          org-pomodoro-ticking-sound-p t)
+      org-export-allow-bind-keywords t
+      org-pomodoro-length 24
+      org-pomodoro-audio-player "mplayer"
+      org-pomodoro-start-sound-p t
+      org-pomodoro-ticking-sound-states '(:pomodoro)
+      org-pomodoro-ticking-sound-p t
+      )
 
      ;; Tooling
-     (auto-completion :variables
-                      auto-completion-return-key-behavior nil
-                      auto-completion-tab-key-behavior 'complete
-                      )
+     (auto-completion
+      :variables
+      auto-completion-return-key-behavior nil
+      auto-completion-tab-key-behavior 'complete
+      )
      syntax-checking
      version-control
-     (git :variables
-          magit-diff-use-overlays nil)
+     (git
+      :variables
+      magit-diff-use-overlays nil
+      )
      gtags
      semantic
-     (shell :variables
-            shell-default-height 48
-            shell-default-position 'bottom
-            shell-default-shell 'multi-term
-            shell-default-term-shell "zsh"
-            multi-term-program "zsh"
-            )
+     (shell
+      :variables
+      shell-default-height 48
+      shell-default-position 'bottom
+      shell-default-shell 'multi-term
+      shell-default-term-shell "zsh"
+      multi-term-program "zsh"
+      )
 
      ;; Languages
      shell-scripts
-     (python :variables
-             python-test-runner 'pytest
-             python-shell-interpreter
-             (concat (getenv "HOME") "/anaconda3/bin/ipython")
-             python-shell-interpreter-args "--simple-prompt -i"
-             )
+     (python
+      :variables
+      python-test-runner 'pytest
+      python-shell-interpreter
+      (concat (getenv "HOME") "/anaconda3/bin/ipython")
+      python-shell-interpreter-args "--simple-prompt -i"
+      )
      ipython-notebook
      octave
      haskell
@@ -77,37 +84,40 @@
      rust
      c-c++
      csharp
-     (javascript :variables
-                 js2-include-node-externs t
-                 js2-strict-trailing-comma-warning nil
-                 js2-function-call '((t nil))
-                 js2-function-param '((t nil))
-                 js2-instance-member '((t nil))
-                 js2-private-function-call '((t nil))
-                 js2-private-member '((t nil)))
+     (javascript
+      :variables
+      js2-include-node-externs t
+      js2-strict-trailing-comma-warning nil
+      js2-function-call '((t nil))
+      js2-function-param '((t nil))
+      js2-instance-member '((t nil))
+      js2-private-function-call '((t nil))
+      js2-private-member '((t nil))
+      )
      react
 
      ;; Other
      emoji
      games
-     (gnus :variables
-           gnus-secondary-select-methods
-           '((nnimap "mail.margeo.nrlssc.navy.mil")
-             (nntp "gmane" (nntp-address "news.gmane.org"))
-             (nntp "news.gwene.org")
-             ;; (nnimap "imap.gmail.com"
-             ;;         (nnimap-server-port "imaps")
-             ;;         (nnimap-stream ssl))
-             ;; (nnimap  "imap.kolabnow.com")
-             )
-           gnus-posting-styles
-           '(("nrlssc.navy.mil" (address "adam.seyfarth@nrlssc.navy.mil")))
-           gnus-read-active-file 'some
-           gnus-fetch-old-headers nil
-           message-citation-line-function
-           'message-insert-formatted-citation-line
-           message-citation-line-format "[%Y-%m-%d %H:%M%z] %f:"
-           )
+     (gnus
+      :variables
+      gnus-secondary-select-methods
+      '((nnimap "mail.margeo.nrlssc.navy.mil")
+        (nntp "gmane" (nntp-address "news.gmane.org"))
+        (nntp "news.gwene.org")
+        ;; (nnimap "imap.gmail.com"
+        ;;         (nnimap-server-port "imaps")
+        ;;         (nnimap-stream ssl))
+        ;; (nnimap  "imap.kolabnow.com")
+        )
+      gnus-posting-styles
+      '(("nrlssc.navy.mil" (address "adam.seyfarth@nrlssc.navy.mil")))
+      gnus-read-active-file 'some
+      gnus-fetch-old-headers nil
+      message-citation-line-function
+      'message-insert-formatted-citation-line
+      message-citation-line-format "[%Y-%m-%d %H:%M%z] %f:"
+      )
      )
 
    dotspacemacs-additional-packages
@@ -125,7 +135,8 @@
    (if (version< emacs-version "24.4")
        '(magit)
      '())
-   dotspacemacs-delete-orphan-packages t))
+   dotspacemacs-delete-orphan-packages t
+   ))
 
 (defun dotspacemacs/init ()
   "Initialization function.
@@ -142,18 +153,23 @@ before layers configuration."
    dotspacemacs-startup-banner 'official
    dotspacemacs-startup-lists '(projects recents)
    dotspacemacs-startup-recent-list-size 12
-   dotspacemacs-themes '(base16-ashes-dark
-                         base16-ashes-light
-                         solarized-dark
-                         solarized-light
-                         spacemacs-dark
-                         spacemacs-light)
+   dotspacemacs-themes
+   '(
+     base16-ashes-dark
+     base16-ashes-light
+     solarized-dark
+     solarized-light
+     spacemacs-dark
+     spacemacs-light
+     )
    dotspacemacs-colorize-cursor-according-to-state t
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 19
-                               :weight semi-bold
-                               :width normal
-                               :powerline-scale 1.0)
+   dotspacemacs-default-font
+   '("Source Code Pro"
+     :size 19
+     :weight semi-bold
+     :width normal
+     :powerline-scale 1.0
+     )
    dotspacemacs-leader-key "SPC"
    dotspacemacs-emacs-leader-key "M-m"
    dotspacemacs-major-mode-leader-key ","
@@ -296,13 +312,15 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
 
 (defun config-keybindings ()
   (spacemacs/declare-prefix "\\" "User commands")
-  (spacemacs/set-leader-keys "\\ r" 'goto-random-line)
-  (spacemacs/set-leader-keys "\\ TAB" 'yas-expand)
-  (spacemacs/set-leader-keys "\\ g" 'gnus-summary-insert-new-articles)
-  (spacemacs/set-leader-keys "\\ s f" 'unhighlight-remappings)
-  (spacemacs/set-leader-keys "\\ s n" 'clear-remapping-alist)
-  (spacemacs/set-leader-keys "\\ c" 'make-evil-cursors-in-region)
-  (spacemacs/set-leader-keys "\\ j" 'semantic-ia-fast-jump)
+  (spacemacs/set-leader-keys
+    "\\ r" 'goto-random-line
+    "\\ TAB" 'yas-expand
+    "\\ g" 'gnus-summary-insert-new-articles
+    "\\ s f" 'unhighlight-remappings
+    "\\ s n" 'clear-remapping-alist
+    "\\ c" 'make-evil-cursors-in-region
+    "\\ j" 'semantic-ia-fast-jump
+    )
   (add-hook 'gnus-group-mode-hook
             ;; list all subscribed groups, even with zero unread messages
             (lambda () (local-set-key "o" 'gnus-list-all-subscribed)))
@@ -313,8 +331,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (evil-leader/set-key-for-mode 'term-mode "k" 'term-char-mode)
   (setq-default
    expand-region-contract-fast-key "V"
-   expand-region-reset-fast-key "r")
-  )
+   expand-region-reset-fast-key "r"
+   ))
 
 (defun config-visuals ()
   (spacemacs/toggle-highlight-current-line-globally-off)
@@ -332,6 +350,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
   (add-to-list 'auto-mode-alist '(".eslintrc\\'" . json-mode))
   (add-to-list 'auto-mode-alist '("\\.F\\'" . f90-mode))
+  (evil-set-initial-state 'term-mode 'emacs)
   )
 
 (defun config-email ()
@@ -342,31 +361,38 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (with-eval-after-load 'gnus
     (setq-default
      gnus-thread-sort-functions '((not gnus-thread-sort-by-most-recent-date))
-     gnus-summary-line-format "%U%R%z %(%&user-date;  %-16,16f  %B %s%)\n"))
-  (setq send-mail-function 'smtpmail-send-it
-        message-send-mail-function 'smtpmail-send-it
-        mail-from-style nil
-        user-full-name "Adam Seyfarth"
-        user-mail-address "adam.seyfarth@nrlssc.navy.mil"
-        smtpmail-debug-info t
-        smtpmail-debug-verb t
-        starttls-use-gnutls t
-        starttls-gnutls-program "gnutls-cli"
-        starttls-extra-arguments nil
-        smtpmail-smtp-server "mail.margeo.nrlssc.navy.mil"
-        smtpmail-smtp-service "587"
-        smtpmail-auth-credentials "~/.authinfo")
+     gnus-summary-line-format "%U%R%z %(%&user-date;  %-16,16f  %B %s%)\n"
+     ))
+  (setq
+   send-mail-function 'smtpmail-send-it
+   message-send-mail-function 'smtpmail-send-it
+   mail-from-style nil
+   user-full-name "Adam Seyfarth"
+   user-mail-address "adam.seyfarth@nrlssc.navy.mil"
+   smtpmail-debug-info t
+   smtpmail-debug-verb t
+   starttls-use-gnutls t
+   starttls-gnutls-program "gnutls-cli"
+   starttls-extra-arguments nil
+   smtpmail-smtp-server "mail.margeo.nrlssc.navy.mil"
+   smtpmail-smtp-service "587"
+   smtpmail-auth-credentials "~/.authinfo"
+   )
   (require 'gnus-desktop-notify)
-  (setq gnus-desktop-notify-function 'gnus-desktop-notify-exec
-        gnus-desktop-notify-exec-program "notify-send -i ~/dotfiles/emacs.png")
+  (setq
+   gnus-desktop-notify-function 'gnus-desktop-notify-exec
+   gnus-desktop-notify-exec-program "notify-send -i ~/dotfiles/emacs.png"
+   )
   (gnus-desktop-notify-mode)
   (gnus-demon-add-scanmail)
   (require 'bbdb)
   (bbdb-initialize 'gnus 'message)
   (bbdb-mua-auto-update-init 'gnus 'message)
-  (setq bbdb-mua-update-interactive-p '(query . create)
-        bbdb-message-all-addresses t
-        bbdb-mua-pop-up nil))
+  (setq
+   bbdb-mua-update-interactive-p '(query . create)
+   bbdb-message-all-addresses t
+   bbdb-mua-pop-up nil
+   ))
 
 (defun config-layouts ()
   (spacemacs|define-custom-layout "@Gnus"
@@ -379,6 +405,21 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     (multi-term)
     (spacemacs/toggle-maximize-buffer)))
 
+(defun config-indentation ()
+  (setq-default
+   indent-tabs-mode nil
+   tab-width 8
+   c-basic-offset 4
+   ))
+
+(defun config-misc ()
+  (global-evil-mc-mode 1)
+  (setq-default
+   typo-language 'English
+   sentence-end-double-space t
+   ring-bell-function 'ignore
+   ))
+
 (defun dotspacemacs/user-config ()
   "Configuration function.
 
@@ -390,22 +431,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (config-filetypes)
   (config-email)
   (config-layouts)
-
-  ;; Misc
-  (global-evil-mc-mode 1)
-  (evil-set-initial-state 'term-mode 'emacs)
-  (setq-default
-   typo-language 'English
-   indent-tabs-mode nil
-   tab-width 8
-   c-basic-offset 4
-   sentence-end-double-space t
-   ring-bell-function 'ignore
-   ;; scroll-conservatively nil
-   ;; scroll-margin 5
-   ;; smooth-scroll-margin 5
-   ;; scroll-preserve-screen-position 't
-   ))
+  (config-indentation)
+  (config-misc))
 
 ;; Sometimes this has an unneeded 'unspecified at the front...
 (defun remove-unspecified ()
