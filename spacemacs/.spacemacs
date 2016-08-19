@@ -4,6 +4,9 @@
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration."
   (setq-default
+   dotspacemacs-distribution 'spacemacs
+   dotspacemacs-enable-lazy-installation 'unused
+   dotspacemacs-ask-for-lazy-installation t
    dotspacemacs-configuration-layer-path '()
    dotspacemacs-configuration-layers
    '(
@@ -84,16 +87,11 @@
      rust
      c-c++
      csharp
+     html
      (javascript
       :variables
-      js2-include-node-externs t
       js2-strict-trailing-comma-warning nil
-      js2-function-call '((t nil))
-      js2-function-param '((t nil))
-      js2-instance-member '((t nil))
-      js2-private-function-call '((t nil))
-      js2-private-member '((t nil))
-      )
+      js2-include-node-externs t)
      react
 
      ;; Other
@@ -118,6 +116,7 @@
       'message-insert-formatted-citation-line
       message-citation-line-format "[%Y-%m-%d %H:%M%z] %f:"
       )
+     erc
      )
 
    dotspacemacs-additional-packages
@@ -131,11 +130,12 @@
      web-mode
      highlight-indent-guides
      )
+   dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages
    (if (version< emacs-version "24.4")
        '(magit)
      '())
-   dotspacemacs-delete-orphan-packages t
+   dotspacemacs-download-packages 'used
    ))
 
 (defun dotspacemacs/init ()
@@ -151,8 +151,8 @@ before layers configuration."
    dotspacemacs-editing-style 'hybrid
    dotspacemacs-verbose-loading nil
    dotspacemacs-startup-banner 'official
-   dotspacemacs-startup-lists '(projects recents)
-   dotspacemacs-startup-recent-list-size 12
+   dotspacemacs-startup-lists '((projects . 12) (recents . 12))
+   dotspacemacs-scratch-mode 'lisp-interaction-mode
    dotspacemacs-themes
    '(
      base16-ashes-dark
@@ -165,7 +165,7 @@ before layers configuration."
    dotspacemacs-colorize-cursor-according-to-state t
    dotspacemacs-default-font
    '("Source Code Pro"
-     :size 19
+     :size 17
      :weight semi-bold
      :width normal
      :powerline-scale 1.0
@@ -174,31 +174,39 @@ before layers configuration."
    dotspacemacs-emacs-leader-key "M-m"
    dotspacemacs-major-mode-leader-key ","
    dotspacemacs-major-mode-emacs-leader-key "C-M-m"  ; aka M-RET
+   dotspacemacs-emacs-command-key "SPC"
    dotspacemacs-distinguish-gui-tab nil
-   dotspacemacs-command-key ":"
    dotspacemacs-remap-Y-to-y$ t
+   dotspacemacs-retain-visual-state-on-shift t
+   dotspacemacs-visual-line-move-text t
+   dotspacemacs-ex-substitute-global t
    dotspacemacs-default-layout-name "Default"
    dotspacemacs-display-default-layout nil
    dotspacemacs-auto-resume-layouts t
+   dotspacemacs-large-file-size 32
    dotspacemacs-auto-save-file-location 'cache
    dotspacemacs-max-rollback-slots 6
-   dotspacemacs-use-ido nil
    dotspacemacs-helm-resize nil
    dotspacemacs-helm-no-header nil
    dotspacemacs-helm-position 'bottom
-   dotspacemacs-enable-paste-micro-state nil
+   dotspacemacs-helm-use-fuzzy 'always
+   dotspacemacs-enable-paste-transient-state nil
    dotspacemacs-which-key-delay 0.4
    dotspacemacs-which-key-position 'bottom
    dotspacemacs-loading-progress-bar t
-   dotspacemacs-fullscreen-at-startup nil
+   dotspacemacs-fullscreen-at-startup t
    dotspacemacs-fullscreen-use-non-native nil
    dotspacemacs-maximized-at-startup nil
    dotspacemacs-active-transparency 90
    dotspacemacs-inactive-transparency 90
+   dotspacemacs-show-transient-state-title t
+   dotspacemacs-show-transient-state-color-guide t
    dotspacemacs-mode-line-unicode-symbols t
    dotspacemacs-smooth-scrolling t
    dotspacemacs-line-numbers t
+   dotspacemacs-folding-method 'origami
    dotspacemacs-smartparens-strict-mode t
+   dotspacemacs-smart-closing-parenthesis t
    dotspacemacs-highlight-delimiters 'any
    dotspacemacs-persistent-server nil
    dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
@@ -265,6 +273,7 @@ before layers configuration."
     font-lock-preprocessor-face
     org-document-info
     org-document-info-keyword
+    js2-function-param
     ))
 
 (defvar faces-to-italic
@@ -272,6 +281,7 @@ before layers configuration."
     font-lock-string-face
     font-lock-constant-face
     link
+    web-mode-html-tag-face
     ))
 
 (defun unhighlight-remappings ()
@@ -310,6 +320,21 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
                           semantic-default-submodes))
     (spacemacs/toggle-semantic-stickyfunc-globally-off)))
 
+(defun helm-switch-to-term-buffer ()
+  (interactive)
+  (require 'helm-files)
+  (unless helm-source-buffers-list
+    (setq helm-source-buffers-list
+          (helm-make-source "Buffers" 'helm-source-buffers)))
+  (helm :sources (helm-build-sync-source "Terminal buffers"
+                   :candidates 'helm-source-buffers-list
+                   :candidate-transformer
+                   (lambda (candidates)
+                     (-filter (lambda (fn) (string-match "^term-" fn)))))
+        :buffer "*helm mini*"
+        :ff-transformer-show-only-basename nil
+        :truncate-lines helm-buffers-truncate-lines))
+
 (defun config-keybindings ()
   (spacemacs/declare-prefix "\\" "User commands")
   (spacemacs/set-leader-keys
@@ -320,6 +345,8 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     "\\ s n" 'clear-remapping-alist
     "\\ c" 'make-evil-cursors-in-region
     "\\ j" 'semantic-ia-fast-jump
+    "a s b" 'helm-switch-to-term-buffer
+    "a i b" 'helm-switch-to-erc-buffer
     )
   (add-hook 'gnus-group-mode-hook
             ;; list all subscribed groups, even with zero unread messages
@@ -340,6 +367,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (add-hook 'after-make-frame-functions 'on-frame-open)
   (add-hook 'prog-mode-hook 'unhighlight-remappings)
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'web-mode-hook (lambda () (highlight-indent-guides-mode 0)))
   (setq-default highlight-indent-guides-method 'character)
   (unless (display-graphic-p)
     (set-face-background 'default "unspecified-bg" (selected-frame))))
@@ -380,8 +408,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
    )
   (require 'gnus-desktop-notify)
   (setq
-   gnus-desktop-notify-function 'gnus-desktop-notify-exec
-   gnus-desktop-notify-exec-program "notify-send -i ~/dotfiles/emacs.png"
+   gnus-desktop-notify-function 'gnus-desktop-notify-send
    )
   (gnus-desktop-notify-mode)
   (gnus-demon-add-scanmail)
@@ -399,17 +426,28 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     :binding "g"
     :body
     (gnus))
+  (spacemacs|define-custom-layout "@IRC"
+    :binding "i"
+    :body
+    (erc))
   (spacemacs|define-custom-layout "@Term"
     :binding "t"
     :body
     (multi-term)
-    (spacemacs/toggle-maximize-buffer)))
+    (spacemacs/toggle-maximize-buffer))
+  )
 
 (defun config-indentation ()
-  (setq-default
+  (setq
    indent-tabs-mode nil
    tab-width 8
    c-basic-offset 4
+   js2-basic-offset 2
+   css-indent-offset 2
+   web-mode-markup-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-attr-indent-offset 2
    ))
 
 (defun config-misc ()
