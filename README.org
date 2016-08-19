@@ -5,8 +5,14 @@ General configuration files for unix tools. Use [[https://www.gnu.org/software/s
 
 ** Instructions
 *** Spacemacs
+Get the latest version of [[https://www.gnu.org/software/emacs/][Emacs]] (at
+least version 24.4), then:
+
 #+BEGIN_SRC sh
-$ git clone --recursive https://github.com/syl20bnr/spacemacs ~/.emacs.d
+$ git clone --recursive --branch develop https://github.com/syl20bnr/spacemacs ~/.emacs.d
+$ git clone --recursive https://gitlab.com.com/aseyfarth/dotfiles ~/dotfiles
+$ cd ~/dotfiles
+$ stow spacemacs
 #+END_SRC
 
 ** Package configuration links
@@ -20,8 +26,6 @@ $ git clone --recursive https://github.com/syl20bnr/spacemacs ~/.emacs.d
     - [[https://github.com/zsh-users/zsh-syntax-highlighting][zsh-syntax-highlighting]]
       --- with some customization I found
       [[http://blog.patshead.com/2012/01/using-and-customizing-zsh-syntax-highlighting-with-oh-my-zsh.html][here]]
-    - [[https://github.com/robbyrussell/oh-my-zsh/wiki/Themes][Theme]]:
-      tjkirch
 - [[https://github.com/syl20bnr/spacemacs][Spacemacs]]
 - Base16
   - [[https://github.com/chriskempson/base16-xresources][Base16 Xresources]]
