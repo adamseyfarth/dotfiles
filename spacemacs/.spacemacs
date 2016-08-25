@@ -56,7 +56,7 @@
       :variables
       magit-diff-use-overlays nil
       )
-     gtags
+     ;; gtags
      semantic
      (shell
       :variables
@@ -122,12 +122,10 @@
    dotspacemacs-additional-packages
    '(
      monky
-     base16-theme
      smtpmail-multi
      dash dash-functional
      gnus-desktop-notify
      bbdb
-     web-mode
      highlight-indent-guides
      )
    dotspacemacs-frozen-packages '()
@@ -155,12 +153,7 @@ before layers configuration."
    dotspacemacs-scratch-mode 'lisp-interaction-mode
    dotspacemacs-themes
    '(
-     base16-ashes-dark
-     base16-ashes-light
-     solarized-dark
-     solarized-light
-     spacemacs-dark
-     spacemacs-light
+     base16-ashes
      )
    dotspacemacs-colorize-cursor-according-to-state t
    dotspacemacs-default-font
@@ -284,6 +277,14 @@ before layers configuration."
     web-mode-html-tag-face
     ))
 
+(defvar keep-highlighting-modes
+  '(
+    react-mode
+    js2-mode
+    web-mode
+    css-mode
+    ))
+
 (defun unhighlight-remappings ()
   "Turn off most syntax highlighting for current buffer (a la this guy:
 https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
@@ -320,21 +321,6 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
                           semantic-default-submodes))
     (spacemacs/toggle-semantic-stickyfunc-globally-off)))
 
-(defun helm-switch-to-term-buffer ()
-  (interactive)
-  (require 'helm-files)
-  (unless helm-source-buffers-list
-    (setq helm-source-buffers-list
-          (helm-make-source "Buffers" 'helm-source-buffers)))
-  (helm :sources (helm-build-sync-source "Terminal buffers"
-                   :candidates 'helm-source-buffers-list
-                   :candidate-transformer
-                   (lambda (candidates)
-                     (-filter (lambda (fn) (string-match "^term-" fn)))))
-        :buffer "*helm mini*"
-        :ff-transformer-show-only-basename nil
-        :truncate-lines helm-buffers-truncate-lines))
-
 (defun config-keybindings ()
   (spacemacs/declare-prefix "\\" "User commands")
   (spacemacs/set-leader-keys
@@ -345,15 +331,18 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     "\\ s n" 'clear-remapping-alist
     "\\ c" 'make-evil-cursors-in-region
     "\\ j" 'semantic-ia-fast-jump
-    "a s b" 'helm-switch-to-term-buffer
-    "a i b" 'helm-switch-to-erc-buffer
     )
   (add-hook 'gnus-group-mode-hook
             ;; list all subscribed groups, even with zero unread messages
             (lambda () (local-set-key "o" 'gnus-list-all-subscribed)))
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p" 'eval-print-last-sexp)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode
-    "<M-return>" 'eval-print-last-sexp)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "e p"
+    'eval-print-last-sexp)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "<M-return>"
+    'eval-print-last-sexp)
+  (evil-leader/set-key-for-mode 'lisp-interaction-mode "e p"
+    'eval-print-last-sexp)
+  (evil-leader/set-key-for-mode 'lisp-interaction-mode "<M-return>"
+    'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'term-mode "j" 'term-line-mode)
   (evil-leader/set-key-for-mode 'term-mode "k" 'term-char-mode)
   (setq-default
@@ -365,9 +354,12 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (spacemacs/toggle-highlight-current-line-globally-off)
   (add-hook 'semantic-mode-hook 'fight-stickyfunc)
   (add-hook 'after-make-frame-functions 'on-frame-open)
-  (add-hook 'prog-mode-hook 'unhighlight-remappings)
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (add-hook 'web-mode-hook (lambda () (highlight-indent-guides-mode 0)))
+  (add-hook 'prog-mode-hook
+            (lambda () (unless (memq major-mode keep-highlighting-modes)
+                         (unhighlight-remappings))))
+  (add-hook 'prog-mode-hook
+            (lambda () (unless (memq major-mode '(web-mode react-mode))
+                (highlight-indent-guides-mode))))
   (setq-default highlight-indent-guides-method 'character)
   (unless (display-graphic-p)
     (set-face-background 'default "unspecified-bg" (selected-frame))))
@@ -377,6 +369,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
   (add-to-list 'auto-mode-alist '(".eslintrc\\'" . json-mode))
+  (add-to-list 'auto-mode-alist '(".babelrc\\'" . json-mode))
   (add-to-list 'auto-mode-alist '("\\.F\\'" . f90-mode))
   (evil-set-initial-state 'term-mode 'emacs)
   )
@@ -438,6 +431,10 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   )
 
 (defun config-indentation ()
+  (with-eval-after-load 'web-mode
+    (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil)))
   (setq
    indent-tabs-mode nil
    tab-width 8
@@ -499,7 +496,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
    (quote
     ("8b584a30417351e60bff667fd6f902c31c8ff53ad7b85e54fcadb17d65e7e9ab" "2159a1f9ea13fb1236b684e8e09d4c40b2f09fff345f7a93d0dacc5f8f9deb27" "03e3e79fb2b344e41a7df897818b7969ca51a15a67dc0c30ebbdeb9ea2cd4492" "240fea1bddbd9b6445860b8cfd323c03c58c92cb4339a3bc65cd9b3c63be9a4a" "4ab89cc4c58408bb799084a4d9be77fe0700b2f1b75809eae330129b4b921b6f" "7545d3bb77926908aadbd525dcb70256558ba05d7c478db6386bfb37fb6c9120" "73ae6088787f6f72ef52f19698b25bc6f0edf47b9e677bf0a85e3a1e8a7a3b17" "f0e69da2cf73c7f153fc09ed3e0ba6e1fd670fec09b8a6a8ed7b4f9efea3b501" "d72836155cd3b3e52fd86a9164120d597cbe12a67609ab90effa54710b2ac53b" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(erc-hide-list (quote ("JOIN" "NICK" "PART" "QUIT" "MODE")))
- '(fci-rule-color "#073642")
+ '(fci-rule-color "#073642" t)
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
@@ -509,6 +506,9 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
      (org-babel-tangle-use-relative-file-links)
      (org-src-preserve-indentation . t))))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
+ '(sp-highlight-pair-overlay nil)
+ '(sp-highlight-wrap-overlay nil)
+ '(sp-highlight-wrap-tag-overlay nil)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
