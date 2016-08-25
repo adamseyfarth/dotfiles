@@ -43,6 +43,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=cyan
 
 alias ls="ls -F --color"
 alias en="emacsclient -n"
+alias vordune="fortune | tr stpfkSTPFKhHqQ zdbvgZDBVG''kK"
 
 function ls_on_chdir() {
     ls
