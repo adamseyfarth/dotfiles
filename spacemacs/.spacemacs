@@ -439,6 +439,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
    indent-tabs-mode nil
    tab-width 8
    c-basic-offset 4
+   js-indent-level 2
    js2-basic-offset 2
    css-indent-offset 2
    web-mode-markup-indent-offset 2
