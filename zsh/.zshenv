@@ -1,3 +1,4 @@
+PATH="$HOME/.cargo/bin:$PATH"
 PATH="$HOME/junest/bin:$PATH"
 PATH="/usr/lib64/openmpi/bin:$PATH"
 PATH="/usr/local/krb5/bin:/usr/local/ossh/bin:$PATH"
@@ -9,3 +10,4 @@ export EDITOR="emacsclient"
 export LESS=-RX
 export KRB5_CONFIG=/usr/local/krb5/etc/krb5.conf
 export SHELL=/usr/bin/zsh
+export RUST_SRC_PATH="$HOME/rustc-1.11.0/src"
