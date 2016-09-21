@@ -363,10 +363,10 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     "\\ t d"   (lambda () (interactive) (insert-timestamp 'day    'space))
     "\\ t h"   (lambda () (interactive) (insert-timestamp 'hour   'space))
     "\\ t m i" (lambda () (interactive) (insert-timestamp 'minute 'space))
-    "\\ t d"   (lambda () (interactive) (insert-timestamp 'second 'space))
+    "\\ t s"   (lambda () (interactive) (insert-timestamp 'second 'space))
     "\\ T h"   (lambda () (interactive) (insert-timestamp 'hour   'T))
     "\\ T m i" (lambda () (interactive) (insert-timestamp 'minute 'T))
-    "\\ T d"   (lambda () (interactive) (insert-timestamp 'second 'T))
+    "\\ T s"   (lambda () (interactive) (insert-timestamp 'second 'T))
     )
   (add-hook 'gnus-group-mode-hook
             ;; list all subscribed groups, even with zero unread messages
