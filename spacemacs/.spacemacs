@@ -85,7 +85,10 @@
      scheme
      clojure
      rust
-     c-c++
+     (c-c++
+      :variables
+      c-c++-default-mode-for-headers 'c++-mode
+      c-c++-enable-clang-support t)
      csharp
      html
      (javascript
@@ -283,6 +286,7 @@ before layers configuration."
     js2-mode
     web-mode
     css-mode
+    rust-mode
     ))
 
 (defun unhighlight-remappings ()
@@ -321,6 +325,29 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
                           semantic-default-submodes))
     (spacemacs/toggle-semantic-stickyfunc-globally-off)))
 
+(defun insert-timestamp (resolution separator)
+  ;; (interactive)
+  (let* ((format-strings-space
+          #s(hash-table data (year
+                              "%Y"
+                              month "%Y-%m"
+                              day "%Y-%m-%d"
+                              hour "%Y-%m-%d %H%z"
+                              minute "%Y-%m-%d %H:%M%z"
+                              second "%Y-%m%d %H:%M:%S%z")))
+         (format-strings-T
+          #s(hash-table data (year
+                              "%Y"
+                              month "%Y-%m"
+                              day "%Y-%m-%d"
+                              hour "%Y-%m-%dT%H%z"
+                              minute "%Y-%m-%dT%H:%M%z"
+                              second "%Y-%m%dT%H:%M:%S%z")))
+         (format-strings (if (eq separator 'space)
+                             format-strings-space
+                           format-strings-T)))
+    (insert (format-time-string (gethash resolution format-strings)))))
+
 (defun config-keybindings ()
   (spacemacs/declare-prefix "\\" "User commands")
   (spacemacs/set-leader-keys
@@ -331,6 +358,15 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     "\\ s n" 'clear-remapping-alist
     "\\ c" 'make-evil-cursors-in-region
     "\\ j" 'semantic-ia-fast-jump
+    "\\ t y"   (lambda () (interactive) (insert-timestamp 'year   'space))
+    "\\ t m o" (lambda () (interactive) (insert-timestamp 'month  'space))
+    "\\ t d"   (lambda () (interactive) (insert-timestamp 'day    'space))
+    "\\ t h"   (lambda () (interactive) (insert-timestamp 'hour   'space))
+    "\\ t m i" (lambda () (interactive) (insert-timestamp 'minute 'space))
+    "\\ t d"   (lambda () (interactive) (insert-timestamp 'second 'space))
+    "\\ T h"   (lambda () (interactive) (insert-timestamp 'hour   'T))
+    "\\ T m i" (lambda () (interactive) (insert-timestamp 'minute 'T))
+    "\\ T d"   (lambda () (interactive) (insert-timestamp 'second 'T))
     )
   (add-hook 'gnus-group-mode-hook
             ;; list all subscribed groups, even with zero unread messages
@@ -345,6 +381,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     'eval-print-last-sexp)
   (evil-leader/set-key-for-mode 'term-mode "j" 'term-line-mode)
   (evil-leader/set-key-for-mode 'term-mode "k" 'term-char-mode)
+  (evil-leader/set-key-for-mode 'c++-mode "=" 'clang-format-buffer)
   (setq-default
    expand-region-contract-fast-key "V"
    expand-region-reset-fast-key "r"
@@ -354,12 +391,12 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (spacemacs/toggle-highlight-current-line-globally-off)
   (add-hook 'semantic-mode-hook 'fight-stickyfunc)
   (add-hook 'after-make-frame-functions 'on-frame-open)
-  (add-hook 'prog-mode-hook
-            (lambda () (unless (memq major-mode keep-highlighting-modes)
-                         (unhighlight-remappings))))
+  ;; (add-hook 'prog-mode-hook
+  ;;           (lambda () (unless (memq major-mode keep-highlighting-modes)
+  ;;                        (unhighlight-remappings))))
   (add-hook 'prog-mode-hook
             (lambda () (unless (memq major-mode '(web-mode react-mode))
-                (highlight-indent-guides-mode))))
+                         (highlight-indent-guides-mode))))
   (setq-default highlight-indent-guides-method 'character)
   (unless (display-graphic-p)
     (set-face-background 'default "unspecified-bg" (selected-frame))))
@@ -438,7 +475,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (setq
    indent-tabs-mode nil
    tab-width 8
-   c-basic-offset 4
+   c-basic-offset 2
    js-indent-level 2
    js2-basic-offset 2
    css-indent-offset 2
@@ -483,11 +520,11 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ahs-case-fold-search nil)
- '(ahs-default-range (quote ahs-range-whole-buffer))
- '(ahs-idle-interval 0.25)
+ '(ahs-case-fold-search nil t)
+ '(ahs-default-range (quote ahs-range-whole-buffer) t)
+ '(ahs-idle-interval 0.25 t)
  '(ahs-idle-timer 0 t)
- '(ahs-inhibit-face-list nil)
+ '(ahs-inhibit-face-list nil t)
  '(compilation-message-face (quote default))
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#839496")
@@ -499,6 +536,9 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  '(erc-hide-list (quote ("JOIN" "NICK" "PART" "QUIT" "MODE")))
  '(fci-rule-color "#073642" t)
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
+ '(package-selected-packages
+   (quote
+    (iedit git-commit rust-mode f anaconda-mode simple-httpd auctex csharp-mode web-mode racket-mode racer persp-mode org-plus-contrib intero hindent geiser evil-unimpaired evil-matchit dumb-jump diff-hl cider smartparens evil haskell-mode git-gutter company helm helm-core markdown-mode auto-complete flycheck projectile magit with-editor hydra js2-mode yapfify yaml-mode xterm-color ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree typo typit toml-mode toc-org tagedit stickyfunc-enhance srefactor spacemacs-theme spaceline smtpmail-multi smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters queue quelpa pyvenv pytest pyenv-mode py-isort popwin pkg-info pip-requirements pcre2el paradox pacmacs origami orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file omnisharp neotree multi-term move-text monky mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc jade-mode info+ indent-guide idris-mode ido-vertical-mode hy-mode hungry-delete htmlize hlint-refactor hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets goto-chg google-translate golden-ratio gnus-desktop-notify gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-rust flycheck-pos-tip flycheck-haskell flx-ido fish-mode fill-column-indicator fancy-battery faceup eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks emoji-cheat-sheet-plus emmet-mode elisp-slime-nav ein disaster deft define-word cython-mode company-web company-tern company-statistics company-shell company-ghci company-ghc company-emoji company-cabal company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmm-mode cmake-mode clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu cargo bbdb base16-theme auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell 2048-game)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(safe-local-variable-values
