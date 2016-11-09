@@ -66,9 +66,6 @@
       shell-default-shell 'eshell
       shell-default-term-shell "zsh"
       multi-term-program "zsh"
-      shell-enable-smart-eshell t
-      eshell-review-quick-commands nil
-      eshell-prompt-function 'paragraph-prompt
       )
 
      ;; Languages
@@ -336,7 +333,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     (spacemacs/toggle-semantic-stickyfunc-globally-off)))
 
 (defun paragraph-prompt ()
-  (setq eshell-prompt-regexp "^(╰─|╭─|│λ |λ# ).*$")
+  (setq eshell-prompt-regexp "^(╰─.*$|╭─.*$|│λ |λ# )")
   (let ((ctime (current-time)))
     (concat
      ;; Line appearing below output of last command
@@ -552,10 +549,12 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
 
 (defun config-misc ()
   (global-evil-mc-mode 1)
+  (require 'eshell-prompt-extras)
   (setq
    flycheck-scalastyle-jar (concat (getenv "HOME") "install/lib/scalastyle_2.11-0.8.0-batch.jar")
    flycheck-scalastylerc (concat (getenv "HOME") ".scalastyle_config.xml")
    ensime-startup-snapshot-notification nil
+   eshell-prompt-function 'paragraph-prompt
    )
   (setq-default
    typo-language 'English
