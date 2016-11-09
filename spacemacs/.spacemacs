@@ -10,6 +10,7 @@
    dotspacemacs-configuration-layer-path '()
    dotspacemacs-configuration-layers
    '(
+     graphviz
      ;; Document related
      markdown
      latex
@@ -62,9 +63,12 @@
       :variables
       shell-default-height 48
       shell-default-position 'bottom
-      shell-default-shell 'multi-term
+      shell-default-shell 'eshell
       shell-default-term-shell "zsh"
       multi-term-program "zsh"
+      shell-enable-smart-eshell t
+      eshell-review-quick-commands nil
+      eshell-prompt-function 'paragraph-prompt
       )
 
      ;; Languages
@@ -84,6 +88,12 @@
      racket
      scheme
      clojure
+     (scala
+      :variables
+      scala-auto-insert-asterisk-in-comments t
+      scala-use-unicode-arrows t
+      ;; scala-auto-start-ensime t
+      )
      rust
      (c-c++
       :variables
@@ -296,7 +306,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (dolist (face faces-to-unhighlight)
     (face-remap-add-relative face 'default))
   (dolist (face faces-to-italic)
-    (face-remap-add-relative face 'bold 'default)))
+    (face-remap-add-relative face 'italic 'default)))
 
 (defun clear-remapping-alist ()
   "Clear the remapping list.  Meant to undo effects of unhighlight-remappings."
@@ -324,6 +334,59 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
                   (remove 'global-semantic-stickyfunc-mode
                           semantic-default-submodes))
     (spacemacs/toggle-semantic-stickyfunc-globally-off)))
+
+(defun paragraph-prompt ()
+  (setq eshell-prompt-regexp "^(╰─|╭─|│λ |λ# ).*$")
+  (let ((ctime (current-time)))
+    (concat
+     ;; Line appearing below output of last command
+     (epe-colorize-with-face
+      (concat
+       "╰─"
+       (if (boundp 'paragraph-prompt-start-time)
+           (format-time-string "%Y-%m-%d %H:%M:%S.%2N → " paragraph-prompt-start-time)
+         "")
+       (format-time-string "%Y-%m-%d %H:%M:%S.%2N" ctime)
+       (if (boundp 'paragraph-prompt-start-time)
+           (concat
+            " ("
+            (format "%.2f" (time-to-seconds (subtract-time ctime paragraph-prompt-start-time)))
+            "s)")
+         ""))
+      'font-lock-comment-face)
+
+     (when (epe-git-p)
+       (concat
+        " "
+        (epe-colorize-with-face
+         (concat (epe-git-branch)
+                 (epe-git-dirty)
+                 (epe-git-untracked)
+                 (let ((unpushed (epe-git-unpushed-number)))
+                   (unless (= unpushed 0)
+                     (concat ":" (number-to-string unpushed)))))
+         'epe-git-face)))
+     "\n\n"
+
+     ;; Line above the input line
+     (epe-colorize-with-face "╭─" 'font-lock-comment-face)
+     (when (epe-remote-p)
+       (epe-colorize-with-face
+        (concat (epe-remote-user) "@" (epe-remote-host) ":")
+        'epe-remote-face))
+     (epe-colorize-with-face (abbreviate-file-name (eshell/pwd)) 'epe-dir-face)
+     (when epe-show-python-info
+       (when (fboundp 'epe-venv-p)
+         (when (and (epe-venv-p) venv-current-name)
+           (epe-colorize-with-face (concat " (" venv-current-name ")") 'epe-venv-face))))
+     ;; Input prompt
+     (epe-colorize-with-face "\n│" 'font-lock-comment-face)
+     (if (= (user-uid) 0)
+         (epe-colorize-with-face "λ# " 'epe-sudo-symbol-face)
+       (epe-colorize-with-face "λ " 'font-lock-comment-face)))))
+
+(defun save-pp-time ()
+  (setq paragraph-prompt-start-time (current-time)))
 
 (defun insert-timestamp (resolution separator)
   ;; (interactive)
@@ -391,13 +454,15 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (spacemacs/toggle-highlight-current-line-globally-off)
   (add-hook 'semantic-mode-hook 'fight-stickyfunc)
   (add-hook 'after-make-frame-functions 'on-frame-open)
-  ;; (add-hook 'prog-mode-hook
-  ;;           (lambda () (unless (memq major-mode keep-highlighting-modes)
-  ;;                        (unhighlight-remappings))))
+  (add-hook 'prog-mode-hook
+            (lambda () (unless (memq major-mode keep-highlighting-modes)
+                         (unhighlight-remappings))))
   (add-hook 'prog-mode-hook
             (lambda () (unless (memq major-mode '(web-mode react-mode))
                          (highlight-indent-guides-mode))))
   (setq-default highlight-indent-guides-method 'character)
+  (add-hook 'eshell-pre-command-hook
+            'save-pp-time)
   (unless (display-graphic-p)
     (set-face-background 'default "unspecified-bg" (selected-frame))))
 
@@ -487,6 +552,11 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
 
 (defun config-misc ()
   (global-evil-mc-mode 1)
+  (setq
+   flycheck-scalastyle-jar (concat (getenv "HOME") "install/lib/scalastyle_2.11-0.8.0-batch.jar")
+   flycheck-scalastylerc (concat (getenv "HOME") ".scalastyle_config.xml")
+   ensime-startup-snapshot-notification nil
+   )
   (setq-default
    typo-language 'English
    sentence-end-double-space t
@@ -538,7 +608,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (mmt powerline org alert log4e gntp skewer-mode json-snatcher json-reformat prop-menu parent-mode haml-mode gitignore-mode fringe-helper git-gutter+ pos-tip flx magit-popup anzu request websocket diminish web-completion-data dash-functional tern ghc inflections edn multiple-cursors paredit peg eval-sexp-fu highlight seq spinner clojure-mode epl bind-map bind-key yasnippet packed pythonic dash avy async popup package-build s iedit git-commit rust-mode f anaconda-mode simple-httpd auctex csharp-mode web-mode racket-mode racer persp-mode org-plus-contrib intero hindent geiser evil-unimpaired evil-matchit dumb-jump diff-hl cider smartparens evil haskell-mode git-gutter company helm helm-core markdown-mode auto-complete flycheck projectile magit with-editor hydra js2-mode yapfify yaml-mode xterm-color ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree typo typit toml-mode toc-org tagedit stickyfunc-enhance srefactor spacemacs-theme spaceline smtpmail-multi smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters queue quelpa pyvenv pytest pyenv-mode py-isort popwin pkg-info pip-requirements pcre2el paradox pacmacs origami orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file omnisharp neotree multi-term move-text monky mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc jade-mode info+ indent-guide idris-mode ido-vertical-mode hy-mode hungry-delete htmlize hlint-refactor hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets goto-chg google-translate golden-ratio gnus-desktop-notify gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-rust flycheck-pos-tip flycheck-haskell flx-ido fish-mode fill-column-indicator fancy-battery faceup eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks emoji-cheat-sheet-plus emmet-mode elisp-slime-nav ein disaster deft define-word cython-mode company-web company-tern company-statistics company-shell company-ghci company-ghc company-emoji company-cabal company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmm-mode cmake-mode clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu cargo bbdb base16-theme auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell 2048-game)))
+    (pcache ensime noflet sbt-mode scala-mode insert-shebang hide-comnt graphviz-dot-mode pug-mode mmt powerline org alert log4e gntp skewer-mode json-snatcher json-reformat prop-menu parent-mode haml-mode gitignore-mode fringe-helper git-gutter+ pos-tip flx magit-popup anzu request websocket diminish web-completion-data dash-functional tern ghc inflections edn multiple-cursors paredit peg eval-sexp-fu highlight seq spinner clojure-mode epl bind-map bind-key yasnippet packed pythonic dash avy async popup package-build s iedit git-commit rust-mode f anaconda-mode simple-httpd auctex csharp-mode web-mode racket-mode racer persp-mode org-plus-contrib intero hindent geiser evil-unimpaired evil-matchit dumb-jump diff-hl cider smartparens evil haskell-mode git-gutter company helm helm-core markdown-mode auto-complete flycheck projectile magit with-editor hydra js2-mode yapfify yaml-mode xterm-color ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree typo typit toml-mode toc-org tagedit stickyfunc-enhance srefactor spacemacs-theme spaceline smtpmail-multi smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters queue quelpa pyvenv pytest pyenv-mode py-isort popwin pkg-info pip-requirements pcre2el paradox pacmacs origami orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file omnisharp neotree multi-term move-text monky mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc jade-mode info+ indent-guide idris-mode ido-vertical-mode hy-mode hungry-delete htmlize hlint-refactor hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets goto-chg google-translate golden-ratio gnus-desktop-notify gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-rust flycheck-pos-tip flycheck-haskell flx-ido fish-mode fill-column-indicator fancy-battery faceup eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks emoji-cheat-sheet-plus emmet-mode elisp-slime-nav ein disaster deft define-word cython-mode company-web company-tern company-statistics company-shell company-ghci company-ghc company-emoji company-cabal company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmm-mode cmake-mode clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu cargo bbdb base16-theme auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell 2048-game)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(safe-local-variable-values
