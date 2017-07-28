@@ -2,7 +2,9 @@
 ;; -*- mode: emacs-lisp -*-
 
 (defun dotspacemacs/layers ()
-  "Configuration Layers declaration."
+  "Configuration Layers declaration.
+You should not put any user code in this function besides modifying the variable
+values."
   (setq-default
    dotspacemacs-distribution 'spacemacs
    dotspacemacs-enable-lazy-installation 'unused
@@ -10,6 +12,8 @@
    dotspacemacs-configuration-layer-path '()
    dotspacemacs-configuration-layers
    '(
+     php
+     csv
      graphviz
      ;; Document related
      markdown
@@ -137,6 +141,7 @@
      gnus-desktop-notify
      bbdb
      highlight-indent-guides
+     perl6-mode
      )
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages
@@ -160,6 +165,7 @@ before layers configuration."
    dotspacemacs-verbose-loading nil
    dotspacemacs-startup-banner 'official
    dotspacemacs-startup-lists '((projects . 12) (recents . 12))
+   dotspacemacs-startup-buffer-responsive t
    dotspacemacs-scratch-mode 'lisp-interaction-mode
    dotspacemacs-themes
    '(
@@ -174,10 +180,24 @@ before layers configuration."
      :powerline-scale 1.0
      )
    dotspacemacs-leader-key "SPC"
+   ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
+   ;; (default "SPC")
+   dotspacemacs-emacs-command-key "SPC"
+   ;; The key used for Vim Ex commands (default ":")
+   dotspacemacs-ex-command-key ":"
+   ;; The leader key accessible in `emacs state' and `insert state'
+   ;; (default "M-m")
    dotspacemacs-emacs-leader-key "M-m"
    dotspacemacs-major-mode-leader-key ","
-   dotspacemacs-major-mode-emacs-leader-key "C-M-m"  ; aka M-RET
-   dotspacemacs-emacs-command-key "SPC"
+   ;; Major mode leader key accessible in `emacs state' and `insert state'.
+   ;; (default "C-M-m")
+   dotspacemacs-major-mode-emacs-leader-key "C-M-m"
+   ;; These variables control whether separate commands are bound in the GUI to
+   ;; the key pairs C-i, TAB and C-m, RET.
+   ;; Setting it to a non-nil value, allows for separate commands under <C-i>
+   ;; and TAB or <C-m> and RET.
+   ;; In the terminal, these pairs are generally indistinguishable, so this only
+   ;; works in the GUI. (default nil)
    dotspacemacs-distinguish-gui-tab nil
    dotspacemacs-remap-Y-to-y$ t
    dotspacemacs-retain-visual-state-on-shift t
@@ -451,9 +471,9 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
   (spacemacs/toggle-highlight-current-line-globally-off)
   (add-hook 'semantic-mode-hook 'fight-stickyfunc)
   (add-hook 'after-make-frame-functions 'on-frame-open)
-  (add-hook 'prog-mode-hook
-            (lambda () (unless (memq major-mode keep-highlighting-modes)
-                         (unhighlight-remappings))))
+  ;; (add-hook 'prog-mode-hook
+  ;;           (lambda () (unless (memq major-mode keep-highlighting-modes)
+  ;;                        (unhighlight-remappings))))
   (add-hook 'prog-mode-hook
             (lambda () (unless (memq major-mode '(web-mode react-mode))
                          (highlight-indent-guides-mode))))
@@ -482,7 +502,10 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
     (setq-default
      gnus-thread-sort-functions '((not gnus-thread-sort-by-most-recent-date))
      gnus-summary-line-format "%U%R%z %(%&user-date;  %-16,16f  %B %s%)\n"
+     mm-discouraged-alternatives '("text/html" "text/richtext")
+     mm-automatic-display (remove "text/html" mm-automatic-display)
      ))
+  (require 'gnus-desktop-notify)
   (setq
    send-mail-function 'smtpmail-send-it
    message-send-mail-function 'smtpmail-send-it
@@ -497,9 +520,6 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
    smtpmail-smtp-server "mail.margeo.nrlssc.navy.mil"
    smtpmail-smtp-service "587"
    smtpmail-auth-credentials "~/.authinfo"
-   )
-  (require 'gnus-desktop-notify)
-  (setq
    gnus-desktop-notify-function 'gnus-desktop-notify-send
    )
   (gnus-desktop-notify-mode)
@@ -589,11 +609,11 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ahs-case-fold-search nil t)
- '(ahs-default-range (quote ahs-range-whole-buffer) t)
- '(ahs-idle-interval 0.25 t)
+ '(ahs-case-fold-search nil)
+ '(ahs-default-range (quote ahs-range-whole-buffer))
+ '(ahs-idle-interval 0.25)
  '(ahs-idle-timer 0 t)
- '(ahs-inhibit-face-list nil t)
+ '(ahs-inhibit-face-list nil)
  '(compilation-message-face (quote default))
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#839496")
@@ -607,7 +627,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (pcache ensime noflet sbt-mode scala-mode insert-shebang hide-comnt graphviz-dot-mode pug-mode mmt powerline org alert log4e gntp skewer-mode json-snatcher json-reformat prop-menu parent-mode haml-mode gitignore-mode fringe-helper git-gutter+ pos-tip flx magit-popup anzu request websocket diminish web-completion-data dash-functional tern ghc inflections edn multiple-cursors paredit peg eval-sexp-fu highlight seq spinner clojure-mode epl bind-map bind-key yasnippet packed pythonic dash avy async popup package-build s iedit git-commit rust-mode f anaconda-mode simple-httpd auctex csharp-mode web-mode racket-mode racer persp-mode org-plus-contrib intero hindent geiser evil-unimpaired evil-matchit dumb-jump diff-hl cider smartparens evil haskell-mode git-gutter company helm helm-core markdown-mode auto-complete flycheck projectile magit with-editor hydra js2-mode yapfify yaml-mode xterm-color ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree typo typit toml-mode toc-org tagedit stickyfunc-enhance srefactor spacemacs-theme spaceline smtpmail-multi smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters queue quelpa pyvenv pytest pyenv-mode py-isort popwin pkg-info pip-requirements pcre2el paradox pacmacs origami orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file omnisharp neotree multi-term move-text monky mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc jade-mode info+ indent-guide idris-mode ido-vertical-mode hy-mode hungry-delete htmlize hlint-refactor hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets goto-chg google-translate golden-ratio gnus-desktop-notify gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-rust flycheck-pos-tip flycheck-haskell flx-ido fish-mode fill-column-indicator fancy-battery faceup eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks emoji-cheat-sheet-plus emmet-mode elisp-slime-nav ein disaster deft define-word cython-mode company-web company-tern company-statistics company-shell company-ghci company-ghc company-emoji company-cabal company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmm-mode cmake-mode clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu cargo bbdb base16-theme auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell 2048-game)))
+    (perl6-mode deferred winum sudoku shut-up fuzzy phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode csv-mode pcache ensime noflet sbt-mode scala-mode insert-shebang hide-comnt graphviz-dot-mode pug-mode mmt powerline org alert log4e gntp skewer-mode json-snatcher json-reformat prop-menu parent-mode haml-mode gitignore-mode fringe-helper git-gutter+ pos-tip flx magit-popup anzu request websocket diminish web-completion-data dash-functional tern ghc inflections edn multiple-cursors paredit peg eval-sexp-fu highlight seq spinner clojure-mode epl bind-map bind-key yasnippet packed pythonic dash avy async popup package-build s iedit git-commit rust-mode f anaconda-mode simple-httpd auctex csharp-mode web-mode racket-mode racer persp-mode org-plus-contrib intero hindent geiser evil-unimpaired evil-matchit dumb-jump diff-hl cider smartparens evil haskell-mode git-gutter company helm helm-core markdown-mode auto-complete flycheck projectile magit with-editor hydra js2-mode yapfify yaml-mode xterm-color ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree typo typit toml-mode toc-org tagedit stickyfunc-enhance srefactor spacemacs-theme spaceline smtpmail-multi smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters queue quelpa pyvenv pytest pyenv-mode py-isort popwin pkg-info pip-requirements pcre2el paradox pacmacs origami orgit org-projectile org-present org-pomodoro org-download org-bullets open-junk-file omnisharp neotree multi-term move-text monky mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc jade-mode info+ indent-guide idris-mode ido-vertical-mode hy-mode hungry-delete htmlize hlint-refactor hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets goto-chg google-translate golden-ratio gnus-desktop-notify gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-rust flycheck-pos-tip flycheck-haskell flx-ido fish-mode fill-column-indicator fancy-battery faceup eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks emoji-cheat-sheet-plus emmet-mode elisp-slime-nav ein disaster deft define-word cython-mode company-web company-tern company-statistics company-shell company-ghci company-ghc company-emoji company-cabal company-c-headers company-auctex company-anaconda column-enforce-mode coffee-mode cmm-mode cmake-mode clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu cargo bbdb base16-theme auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell 2048-game)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(safe-local-variable-values
