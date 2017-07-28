@@ -6,7 +6,6 @@ load /etc/profile.d/autojump.zsh
 
 source $HOME/dotfiles/antigen/antigen.zsh
 antigen use oh-my-zsh
-# loosely inspired by tjkirch
 antigen theme $HOME/dotfiles/zsh aseyfarth
 
 antigen bundles <<EOBUNDLES
@@ -20,10 +19,10 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 ZSH_HIGHLIGHT_STYLES[default]=none
 ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red,bold
 ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=green
-ZSH_HIGHLIGHT_STYLES[alias]=none
-ZSH_HIGHLIGHT_STYLES[builtin]=none
-ZSH_HIGHLIGHT_STYLES[function]=none
-ZSH_HIGHLIGHT_STYLES[command]=none
+ZSH_HIGHLIGHT_STYLES[alias]=fg=green
+ZSH_HIGHLIGHT_STYLES[builtin]=fg=green
+ZSH_HIGHLIGHT_STYLES[function]=fg=green
+ZSH_HIGHLIGHT_STYLES[command]=fg=green
 ZSH_HIGHLIGHT_STYLES[precommand]=none
 ZSH_HIGHLIGHT_STYLES[commandseparator]=none
 ZSH_HIGHLIGHT_STYLES[hashed-command]=none
@@ -39,7 +38,7 @@ ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[assign]=none
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=cyan
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=black,bold
 
 alias ls="ls -F --color"
 alias en="emacsclient -n"

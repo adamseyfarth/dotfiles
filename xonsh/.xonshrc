@@ -1,0 +1,62 @@
+# -*- mode: python -*-
+
+import builtins
+import pendulum
+from os.path import join as opj
+
+$COMPLETIONS_CONFIRM = True
+$XONSH_COLOR_STYLE = "default"
+$SHELL = $HOME + "/anaconda3/bin/xonsh"
+$LD_LIBRARY_PATH.append(opj($HOME, "install", "lib"))
+
+walltop = "╭─"
+wallmid = "│ "
+wallbot = "╰─"
+
+graycolor = "{BOLD_BLACK}" if $TERM == "eterm-color" else "{BOLD_INTENSE_BLACK}"
+
+def rtn():
+    try:
+        return builtins.__xonsh_history__[-1].rtn
+    except:
+        return 0
+
+
+def timestamp():
+    return "[" + pendulum.now().format("YYYY-MM-DD HH:mm:ss.SS z", formatter="alternative") + "]"
+
+
+def prompt():
+    return_code = ""
+    if rtn() != 0:
+        return_code = graycolor + wallmid + "{RED}" + "Return code " + str(rtn()) + "{NO_COLOR}\n"
+
+    gitpart = "{branch_color}{curr_branch: ({})}"
+    close_timestamp = graycolor + wallbot + timestamp() + gitpart + "{NO_COLOR}\n"
+
+    opening = (graycolor + walltop + "{user}@{hostname}:" +
+               "{BOLD_BLUE}{cwd}{NO_COLOR}" +
+               graycolor + "{prompt_end}{NO_COLOR}\n")
+
+    return return_code + close_timestamp + "\n" + opening
+
+
+$PROMPT = prompt
+
+
+@events.on_precommand
+def pre_timestamp(cmd, **kw):
+    try:
+        echo @('\033[30;1m' + wallmid + timestamp() + '\033[0m')
+    except:
+        pass
+    return
+
+
+@events.on_chdir
+def onch(olddir, newdir, **kw):
+    try:
+        $[ls]
+    except:
+        pass
+    return
