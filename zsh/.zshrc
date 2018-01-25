@@ -40,7 +40,8 @@ ZSH_HIGHLIGHT_STYLES[assign]=none
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=black,bold
 
-alias ls="ls -F --color"
+# alias ls='ls --color -G'
+alias ls="ls -FG"
 alias en="emacsclient -n"
 alias vordune="fortune | tr stpfkSTPFKhHqQ zdbvgZDBVG''kK"
 
