@@ -16,7 +16,7 @@ if [ $TERM = linux ]; then
     dash='q'
 fi
 
-ZSH_THEME_GIT_PROMPT_PREFIX=" ${color}("
+ZSH_THEME_GIT_PROMPT_PREFIX=" ${color}(git:"
 ZSH_THEME_GIT_PROMPT_SUFFIX="${color})%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[red]%}𝚫%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
@@ -30,16 +30,23 @@ function prompt_char {
 }
 
 function timestamp() {
-    date +'[%Y-%m-%d %H:%M:%S.%3N%:z]'
+    date +'[%Y-%m-%d %H:%M:%S]'
 }
 
 function preexec_timestamp() {
     echo ${echocolor}${bar} $(timestamp)${reset_color}
 }
 
+function venv_tag() {
+    if [ -z $VIRTUAL_ENV ]; then
+        return
+    fi
+    echo " ${echocolor}(venv:$(basename $VIRTUAL_ENV))${reset_color}"
+}
+
 prompt_tail=\
 '%(?,,'${color}${bar}' %{$fg[red]%}exit status: $?%{$reset_color%}
-)'${color}${ll}${dash}'$(timestamp)%{$reset_color%}$(git_prompt_info)'
+)'${color}${ll}${dash}'$(timestamp)%{$reset_color%}$(git_prompt_info)$(venv_tag)'
 
 prompt_head=\
 ${color}${ul}${dash}'%n@%m:%{$fg_bold[blue]%}%~/%{$reset_color%}$(prompt_char)
