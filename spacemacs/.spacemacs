@@ -469,6 +469,7 @@ https://www.robertmelton.com/2016/02/24/syntax-highlighting-off/)"
    ))
 
 (defun config-visuals ()
+  (setq-default fill-column 110)
   (spacemacs/toggle-highlight-current-line-globally-off)
   (add-hook 'semantic-mode-hook 'fight-stickyfunc)
   (add-hook 'after-make-frame-functions 'on-frame-open)
