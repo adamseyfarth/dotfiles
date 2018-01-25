@@ -50,5 +50,13 @@ function ls_on_chdir() {
 }
 add-zsh-hook chpwd ls_on_chdir
 
-export NVM_DIR="/home/aseyfarth@margeo.nrlssc.navy.mil/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+source $HOME/.benchling-dotfiles/.bashrc.benchling
+
+ssh-add -A
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export VIRTUAL_ENV_DISABLE_PROMPT=yes
+source ~/.envs/aurelia/bin/activate
