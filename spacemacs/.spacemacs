@@ -13,6 +13,7 @@ values."
    dotspacemacs-configuration-layers
    '(
      php
+     ivy
      csv
      graphviz
      ;; Document related
@@ -209,15 +210,15 @@ before layers configuration."
    dotspacemacs-large-file-size 32
    dotspacemacs-auto-save-file-location 'cache
    dotspacemacs-max-rollback-slots 6
-   dotspacemacs-helm-resize nil
-   dotspacemacs-helm-no-header nil
-   dotspacemacs-helm-position 'bottom
-   dotspacemacs-helm-use-fuzzy 'always
+   ;; dotspacemacs-helm-resize nil
+   ;; dotspacemacs-helm-no-header nil
+   ;; dotspacemacs-helm-position 'bottom
+   ;; dotspacemacs-helm-use-fuzzy 'always
    dotspacemacs-enable-paste-transient-state nil
    dotspacemacs-which-key-delay 0.4
    dotspacemacs-which-key-position 'bottom
    dotspacemacs-loading-progress-bar t
-   dotspacemacs-fullscreen-at-startup t
+   dotspacemacs-fullscreen-at-startup nil
    dotspacemacs-fullscreen-use-non-native nil
    dotspacemacs-maximized-at-startup nil
    dotspacemacs-active-transparency 90
