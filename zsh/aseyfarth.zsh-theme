@@ -49,13 +49,13 @@ prompt_tail=\
 )'${color}${ll}${dash}'$(timestamp)%{$reset_color%}$(git_prompt_info)$(venv_tag)'
 
 prompt_head=\
-${color}${ul}${dash}'%n@%m:%{$fg_bold[blue]%}%~/%{$reset_color%}$(prompt_char)
-'
+${color}${ul}${dash}'%n@%m:%{$fg_bold[blue]%}%~/%{$reset_color%}$(prompt_char)'
 
 PROMPT=\
 "$prompt_tail
 
-$prompt_head"
+$prompt_head
+"
 
 PROMPT2=${color}'%_> %{$reset_color%}'
 PROMPT3=${color}'?# %{$reset_color%}'

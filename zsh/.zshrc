@@ -41,9 +41,10 @@ ZSH_HIGHLIGHT_STYLES[assign]=none
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=black,bold
 
 # alias ls='ls --color -G'
-alias ls="ls -FG"
+alias ls="ls -GF"
 alias en="emacsclient -n"
 alias vordune="fortune | tr stpfkSTPFKhHqQ zdbvgZDBVG''kK"
+alias ag="ag --color-path 1\;33"
 
 function ls_on_chdir() {
     ls
@@ -60,3 +61,12 @@ export NVM_DIR="$HOME/.nvm"
 
 export VIRTUAL_ENV_DISABLE_PROMPT=yes
 source ~/.envs/aurelia/bin/activate
+export LSCOLORS=exfxcxdxbxegedabagacad
+
+if [ -z "$INSIDE_EMACS" -a -e "${HOME}/.iterm2_shell_integration.zsh" ]; then
+    source "${HOME}/.iterm2_shell_integration.zsh"
+fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+setopt no_share_history
